@@ -1,5 +1,6 @@
 #include "20141578.h"
 #include "shell_command.h"
+#include "opcode.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,10 +10,12 @@ int main(){
 	char command_copy[MAX_COMMAND_LENGTH + 1];
 	int tmp;
 	int command_length;
+	int is_error;
 
 	while(1){
 		printf("sicsim> ");
 		command_length = 0;
+		is_error = 0;
 		while((tmp=getchar()) != '\n'){
 			if(tmp == EOF){
 				delete_history_linked_list();
@@ -24,8 +27,6 @@ int main(){
 		}
 		command[command_length] = '\0';
 
-		add_to_history(command);
-		// TODO : trailing whitespace?? trailing comma??
 		strcpy(command_copy, command);
 		delete_trailing_whitespace(command_copy);
 		if(strcmp(command_copy, "q") == 0 || strcmp(command_copy, "quit") == 0){
@@ -37,13 +38,17 @@ int main(){
 		else if(strcmp(command_copy, "d") == 0 || strcmp(command_copy, "dir") == 0)
 			print_curr_directory();
 		else if(strcmp(command_copy, "hi") == 0 || strcmp(command_copy, "history") == 0)
-			print_history();
+			add_to_history(command), print_history();
 		else if(strcmp(command_copy, "reset") == 0)
 			memset(memory,0,MAX_MEMORY);
 		else if(strcmp(command_copy, "opcodelist") == 0)
 			print_opcode();
 		else
-			print_error(command, command_with_whitespace(command_copy));
+			is_error = print_error(command, command_with_whitespace(command_copy));
+
+		if(!is_error && 
+				!(strcmp(command_copy, "hi") == 0 || strcmp(command_copy, "history") == 0)) 
+			add_to_history(command);
 	}
 	return 0;
 }
@@ -289,9 +294,9 @@ void print_memory(int start, int end){
 	}
 }
 
-void print_error(const char* command, int status){
+int print_error(const char* command, int status){
 	switch(status){
-		case 0: break;
+		case 0: return 0;
 		case 1: 
 						fprintf(stderr, "Error : %s : Command not found\n",command); 
 						break;
@@ -320,7 +325,6 @@ void print_error(const char* command, int status){
 						fprintf(stderr, "Error : Please check number of comma(',').\n");
 						break;
 	}
+	return 1;
 }
 
-void print_opcode(){
-}

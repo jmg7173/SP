@@ -29,7 +29,7 @@ void print_curr_directory(){
 		if(strcmp(files->d_name,".") == 0 ||
 				strcmp(files->d_name,"..") == 0)
 			continue;
-		printf("%-s",files->d_name);
+		printf("%s",files->d_name);
 		stat(files->d_name, &info);
 		state = info.st_mode;
 		if(S_ISDIR(state))
