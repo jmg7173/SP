@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-W -Wall
-SOURCES=20141578.c shell_command.c
+SOURCES=20141578.c shell_command.c opcode.c
 OBJECTS=$(SOURCES:.c=.o)
 EXECUTABLE=20141578.out
 

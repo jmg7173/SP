@@ -7,10 +7,15 @@
 typedef struct _HASH_NODE{
 	int opcode;
 	char instr[MAX_INSTRUCTION];
+	int format1;
+	int format2;
 	struct _HASH_NODE *next;
 }hash_node;
 
-hash_node *hash_table[MAX_HASH_BUCKET] = NULL;
-
+void make_hashtable();
+void set_hashtable(char*, int, int, int);
 void print_opcode();
+int search_mnemonic(const char*);
+unsigned int hashfunction_murmur(const char*);
+unsigned int my_hashfunction(const char*);
 #endif

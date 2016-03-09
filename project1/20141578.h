@@ -9,6 +9,7 @@
 char memory[MAX_MEMORY] = {0};
 int curr_addr = 0; 
 
+void quit_program();
 void delete_trailing_whitespace(char*);
 int command_with_whitespace(char*);
 int is_hexa(const char*, int);

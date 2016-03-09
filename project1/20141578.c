@@ -11,6 +11,8 @@ int main(){
 	int tmp;
 	int command_length;
 	int is_error;
+	
+	make_hashtable();
 
 	while(1){
 		printf("sicsim> ");
@@ -18,7 +20,7 @@ int main(){
 		is_error = 0;
 		while((tmp=getchar()) != '\n'){
 			if(tmp == EOF){
-				delete_history_linked_list();
+				quit_program();
 				return 0;
 			}
 			if(command_length >= MAX_COMMAND_LENGTH)
@@ -30,7 +32,7 @@ int main(){
 		strcpy(command_copy, command);
 		delete_trailing_whitespace(command_copy);
 		if(strcmp(command_copy, "q") == 0 || strcmp(command_copy, "quit") == 0){
-			delete_history_linked_list();
+			quit_program();
 			break;
 		}
 		else if(strcmp(command_copy, "h") == 0 || strcmp(command_copy, "help") == 0)
@@ -51,6 +53,10 @@ int main(){
 			add_to_history(command);
 	}
 	return 0;
+}
+
+void quit_program(){
+	delete_history_linked_list();
 }
 
 void delete_trailing_whitespace(char* str){
@@ -217,6 +223,16 @@ int command_with_whitespace(char* str){
 		memset(memory+start, value, end-start+1);
 		return 0;
 	}
+	else if(strcmp(tmp, "opcode") == 0){
+		tmp = strtok(NULL, " ");
+		if(!tmp)
+			return 10;
+		value = search_mnemonic(tmp);
+		if(value == -1)
+			return 11;
+		else printf("opcode is %02X\n",value);
+		return 0;
+	}
 	return 1;
 }
 
@@ -323,6 +339,12 @@ int print_error(const char* command, int status){
 						break;
 		case 9:
 						fprintf(stderr, "Error : Please check number of comma(',').\n");
+						break;
+		case 10:
+						fprintf(stderr, "Error : Missing mnemonic.\n");
+						break;
+		case 11:
+						fprintf(stderr, "Error : Doesn't exist mnemonic.\n");
 						break;
 	}
 	return 1;
