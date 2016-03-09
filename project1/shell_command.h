@@ -14,18 +14,6 @@ history_node* history_head;
 
 extern char memory[];
 extern int curr_addr;
-const static char *help_commands[HELP_COMMAND_NUM] = {
-	"h[elp]",
-	"d[ir]",
-	"q[uit]",
-	"hi[story]",
-	"du[mp] [start, end]",
-	"e[dit] address, value",
-	"f[ill] start, end, value",
-	"reset",
-	"opcode mnemonic",
-	"opcodelist"
-};
 
 
 void print_help_commands();

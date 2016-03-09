@@ -1,6 +1,5 @@
 CC=gcc
-CFLAGS=-c -Wall
-LDFLAGS=
+CFLAGS=-W -Wall
 SOURCES=20141578.c shell_command.c
 OBJECTS=$(SOURCES:.c=.o)
 EXECUTABLE=20141578.out
@@ -8,8 +7,10 @@ EXECUTABLE=20141578.out
 all: $(SOURCES) $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS) 
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+	$(CC) $(OBJECTS) -o $@
 
 .c.o:
-	$(CC) $(CFLAGS) $< -o $@
+	$(CC) -c $< -o $@ $(CFLAGS)
 
+clean:
+	rm -rf *.o *.out

@@ -105,6 +105,7 @@ int command_with_whitespace(char* str){
 		if(!tmp){
 			print_memory(curr_addr, curr_addr + DEFAULT_READ_MEMORY);
 			curr_addr = curr_addr + DEFAULT_READ_MEMORY + 1;
+			if(curr_addr > 0xFFFFF) curr_addr = 0;
 			return 0;
 		}
 
@@ -119,6 +120,7 @@ int command_with_whitespace(char* str){
 			if(comma_checker) return 9;
 			print_memory(start, start+DEFAULT_READ_MEMORY);
 			curr_addr = start + DEFAULT_READ_MEMORY + 1;
+			if(curr_addr > 0xFFFFF) curr_addr = 0;
 			return 0;
 		}
 		if(comma_checker != 1) return 9;
@@ -135,6 +137,7 @@ int command_with_whitespace(char* str){
 			return 8;
 		print_memory(start, end);
 		curr_addr = end + 1;
+		if(curr_addr > 0xFFFFF) curr_addr = 0;
 		return 0;
 	}
 	
@@ -219,13 +222,8 @@ int is_hexa(const char* str, int option){
 	int length = strlen(str);
 	int comma_check = 0;
 	int i;
+	int result;
 
-	if(option == 2){
-		if(length > 3) return -1;
-	}
-	else{
-		if(length > 6) return -1;
-	}
 	for(i = 0; i < length; i++){
 		if(str[i] == ',') comma_check++;
 		else if(!is_in_range(str[i]) || comma_check >= 1)
@@ -233,7 +231,14 @@ int is_hexa(const char* str, int option){
 	}
 	
 	if(comma_check > 1) return -2;
-	return strtol(str,wrong, 16);
+	
+	result = strtol(str,wrong,16);
+	if(result > 0xFFFFF)
+		return -1;
+	else if(option == 2 && result > 0xFF)
+		return -1;
+
+	return result;
 }
 
 int is_in_range(const char c){
