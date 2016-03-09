@@ -224,13 +224,16 @@ int command_with_whitespace(char* str){
 		return 0;
 	}
 	else if(strcmp(tmp, "opcode") == 0){
+		hash_node* mnemonic;
 		tmp = strtok(NULL, " ");
 		if(!tmp)
 			return 10;
-		value = search_mnemonic(tmp);
-		if(value == -1)
+		mnemonic = search_mnemonic(tmp);
+		if(mnemonic == NULL)
 			return 11;
-		else printf("opcode is %02X\n",value);
+		else {
+			printf("opcode is %02X\n",mnemonic->opcode);
+		}
 		return 0;
 	}
 	return 1;

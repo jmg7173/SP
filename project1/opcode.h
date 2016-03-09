@@ -15,7 +15,7 @@ typedef struct _HASH_NODE{
 void make_hashtable();
 void set_hashtable(char*, int, int, int);
 void print_opcode();
-int search_mnemonic(const char*);
+hash_node* search_mnemonic(const char*);
 unsigned int hashfunction_murmur(const char*);
 unsigned int my_hashfunction(const char*);
 #endif

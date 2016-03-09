@@ -17,18 +17,19 @@ void make_hashtable(){
 	while(fgets(tmp,99,fp) != NULL){
 		sscanf(tmp,"%02X %s %d/%d",&opcode,instr,&format1,&format2);
 		set_hashtable(instr,opcode,format1,format2);
+		format2 = -1;
 	}
 }
 
-int search_mnemonic(const char* key){
+hash_node* search_mnemonic(const char* key){
 	int hash = hashfunction_murmur(key);
 	hash_node *tmp = hash_table[hash];
 	while(tmp != NULL){
 		if(strcmp(key, tmp->instr) == 0)
-			return tmp->opcode;
+			return tmp;
 		tmp = tmp->next;
 	}
-	return -1;
+	return NULL;
 }
 
 void set_hashtable(char* key, int value, int format1, int format2){
