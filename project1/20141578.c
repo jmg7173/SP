@@ -89,10 +89,19 @@ void delete_trailing_whitespace(char* str){
 				if(str[i] == ',') i = idx - 1;
 				else i = idx;
 			}
+			else if(str[i] == ','){
+				if(i+1 < MAX_COMMAND_LENGTH && (str[i+1] != ' ' && str[i+1] != '\t')){
+					char* tmp = (char*)malloc((len-i)*sizeof(char));
+					strcpy(tmp, str+i+1);
+					str[i+1] = ' ';
+					str[i+2] = '\0';
+					strcat(str,tmp);
+					len = strlen(str);
+				}
+			}
 			trailing_whitespace = 0;
 			first_char = 1;
 		}
-		
 		if(trailing_whitespace == 1){
 			idx = i;
 		}
@@ -105,7 +114,7 @@ int command_with_whitespace(char* str){
 	int comma_checker;
 	
 	tmp = strtok(str, " ");
-	
+		
 	//Check if string is empty
 	if(!tmp)
 		return 7;
@@ -134,7 +143,7 @@ int command_with_whitespace(char* str){
 			if(curr_addr > 0xFFFFF) curr_addr = 0;
 			return 0;
 		}
-		if(comma_checker != 1) return 9;
+		if(comma_checker > 1) return 9;
 		if((end = is_hexa(tmp, 1)) == -1)
 			return 3;
 		else if(end == -2)
@@ -166,7 +175,7 @@ int command_with_whitespace(char* str){
 		tmp = strtok(NULL, " ");
 		if(!tmp)
 			return 5;
-		if(comma_checker != 1)
+		if(comma_checker > 1)
 			return 9;
 		if((value = is_hexa(tmp, 2)) == -1)
 			return 4;
@@ -195,7 +204,7 @@ int command_with_whitespace(char* str){
 		tmp = strtok(NULL, " ");
 		if(!tmp)
 			return 2;
-		if(comma_checker != 1)
+		if(comma_checker > 1)
 			return 9;
 		if((end = is_hexa(tmp, 1)) == -1)
 			return 3;
@@ -206,7 +215,7 @@ int command_with_whitespace(char* str){
 		tmp = strtok(NULL, " ");
 		if(!tmp)
 			return 5;
-		if(comma_checker != 1)
+		if(comma_checker > 1)
 			return 9;
 		else if((value = is_hexa(tmp, 2)) == -1)
 			return 4;
