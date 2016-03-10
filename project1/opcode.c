@@ -6,14 +6,12 @@
 
 #define ROT32(x, y) ((x << y) | (x >> (32 - y)))
 hash_node *hash_table[MAX_HASH_BUCKET] = {0};
-static unsigned int seed;
+static unsigned int seed = 23;
 void make_hashtable(){
 	FILE* fp = fopen("opcode.txt","r");
 	char tmp[100];
 	int opcode, format1, format2;
 	char instr[MAX_INSTRUCTION];
-	srand(time(NULL));
-	seed = rand();
 	while(fgets(tmp,99,fp) != NULL){
 		sscanf(tmp,"%02X %s %d/%d",&opcode,instr,&format1,&format2);
 		set_hashtable(instr,opcode,format1,format2);
