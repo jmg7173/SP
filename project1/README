@@ -1,0 +1,58 @@
+>> In bash
+Complie command : make
+Execution command : ./20141578.out
+Clean object code and execute file command : make clean
+
+>> In sic simulator
+Commands that can use in sicsim
+    - Shell commands
+        - h[elp]
+					  - Show available commands in sicsim. 
+		    - hi[story]
+				    - Show history of valid inputs.
+		    - d[ir]
+				    - Show current directory's files and directories. 
+						- It doesn't show current directory(./), previous directory(../) 
+		    - q[uit]
+				    - quit sicsim machine.
+		- Memory commands
+		    - du[mp] [start, end]
+				    - Show contents of memory
+						- options
+						    - default option (option 1) : du[mp]
+								    - Show contents of memory, printing next to previous memory address
+										- Showing amount : 160 Bytes.
+										- Default previous address : 0
+										- If previous memory address is 0xFFFFF, it starts from address '0'
+								- option 2 : du[mp] start
+								    - Show contents of memory, printing from start address
+										- Showing amount : 160 Bytes.
+										- Save end address of printing memory as previous memory address
+								- option 3 : du[mp] start, end
+								    - Show contents of memory, printing from start to end
+										- [Warning!] 
+												- You must include only one comma(',') between start and end
+												- Do not include comma(',') at the end of end address
+												- Starting address must be more than ending address
+												- ex)
+														- du 4, 4, (X)
+														- du 4, 4  (O)
+														- du 4 , 4 (O)
+										- Save end as previous memory address
+					  - It doesn't save invalid command's previous memory address
+						- At option 1 and 2, if ending address is above than 0xFFFFF, ending address is automatically set as 0xFFFFF
+				- e[dit] address, value
+				    - Edit memory as input value at that address
+				- f[ill] start, end, value
+						- Fill memory as input value from start to end
+				- reset
+						- Reset all memory as '00'
+		- Opcode commands
+		    - opcodelist
+						- Show opcodes that saved at hash table 
+				- opcode mnemonic
+						- Show opcode of mnemonic
+
+[WARNING]
+		- Every numbers are hexadecimal numbers
+		- White spaces(' ', '\t') can be included every commands
