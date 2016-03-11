@@ -5,7 +5,7 @@ Clean object code and execute file command : make clean
 
 >> In sic simulator
 Commands that can use in sicsim
-  - Shell commands
+	- Shell commands
 		- h[elp]
 			- Show available commands in sicsim. 
 		- hi[story]
