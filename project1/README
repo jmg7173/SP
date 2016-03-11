@@ -6,7 +6,7 @@ Clean object code and execute file command : make clean
 >> In sic simulator
 Commands that can use in sicsim
   - Shell commands
-    - h[elp]
+		- h[elp]
 			- Show available commands in sicsim. 
 		- hi[story]
 			- Show history of valid inputs.
@@ -16,7 +16,7 @@ Commands that can use in sicsim
 		- q[uit]
 			- quit sicsim machine.
 	- Memory commands
-	  - du[mp] [start, end]
+		- du[mp] [start, end]
 			- Show contents of memory
 			- options
 				- default option (option 1) : du[mp]
@@ -48,7 +48,7 @@ Commands that can use in sicsim
 		- reset
 			- Reset all memory as '00'
 	- Opcode commands
-	  - opcodelist
+		- opcodelist
 			- Show opcodes that saved at hash table 
 		- opcode mnemonic
 			- Show opcode of mnemonic
