@@ -12,10 +12,6 @@ typedef struct _NODE{
 history_node* history_linked_list;
 history_node* history_head;
 
-extern char memory[];
-extern int curr_addr;
-
-
 void print_help_commands();
 void print_curr_directory();
 void print_history();

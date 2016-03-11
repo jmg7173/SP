@@ -119,6 +119,26 @@ unsigned int hashfunction_murmur(const char* key){
 	return hash % MAX_HASH_BUCKET;
 }
 
+int command_opcode(){
+	hash_node* mnemonic;
+	char* tmp;
+
+	tmp = strtok(NULL, " ");
+	if(!tmp)
+		return 10;
+	mnemonic = search_mnemonic(tmp);
+	
+	if((tmp = strtok(NULL," ")))
+			return 6;
+	if(mnemonic == NULL)
+		return 11;
+	
+	else 
+		printf("opcode is %02X\n",mnemonic->opcode);
+	return 0;
+}
+
+
 void print_opcode(){
 	int i;
 	hash_node* tmp;

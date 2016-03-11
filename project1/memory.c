@@ -207,3 +207,6 @@ void print_memory(int start, int end){
 	}
 }
 
+void reset_memory(){
+	memset(memory,0,MAX_MEMORY);
+}

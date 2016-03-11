@@ -43,7 +43,7 @@ int main(){
 		else if(strcmp(command_copy, "hi") == 0 || strcmp(command_copy, "history") == 0)
 			add_to_history(command), print_history();
 		else if(strcmp(command_copy, "reset") == 0)
-			memset(memory,0,MAX_MEMORY);
+			reset_memory();
 		else if(strcmp(command_copy, "opcodelist") == 0)
 			print_opcode();
 		else
@@ -112,8 +112,6 @@ void delete_trailing_whitespace(char* str){
 
 int command_with_whitespace(char* str){
 	char *tmp;
-//	int start, end, value;
-//	int comma_checker;
 	
 	tmp = strtok(str, " ");
 		
@@ -133,21 +131,8 @@ int command_with_whitespace(char* str){
 	else if(strcmp(tmp, "f") == 0 || strcmp(tmp, "fill") == 0)
 		return command_fill();
 	
-	else if(strcmp(tmp, "opcode") == 0){
-		hash_node* mnemonic;
-		tmp = strtok(NULL, " ");
-		if(!tmp)
-			return 10;
-		mnemonic = search_mnemonic(tmp);
-		if((tmp = strtok(NULL," ")))
-				return 6;
-		if(mnemonic == NULL)
-			return 11;
-		else {
-			printf("opcode is %02X\n",mnemonic->opcode);
-		}
-		return 0;
-	}
+	else if(strcmp(tmp, "opcode") == 0)
+		return command_opcode();
 	
 	return 1;
 }
