@@ -54,6 +54,19 @@ void set_hashtable(char* key, int value, int format1, int format2){
 	}
 }
 
+void delete_hashtable(){
+	int i;
+	hash_node *tmp;
+	for(i = 0; i<MAX_HASH_BUCKET; i++){
+		tmp = hash_table[i];
+		while(tmp != NULL){
+			tmp = hash_table[i]->next;
+			free(hash_table[i]);
+			hash_table[i] = tmp;
+		}
+	}
+}
+
 unsigned int hashfunction_murmur(const char* key){
 	static const unsigned int c1 = 0xcc9e2d51;
 	static const unsigned int c2 = 0x1b873593;
