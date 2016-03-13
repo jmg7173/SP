@@ -4,24 +4,37 @@
 #include <string.h>
 #include <time.h>
 
+// macro for rotate binary numbers for not losing any bit
 #define ROT32(x, y) ((x << y) | (x >> (32 - y)))
+
+// Declare hash_table parameter that has MAX_HASH_BUCKET buckets
 hash_node *hash_table[MAX_HASH_BUCKET] = {0};
+
+// Seed for hash function
 static unsigned int seed = 23;
+
+// Make hashtable
 void make_hashtable(){
 	FILE* fp = fopen("opcode.txt","r");
 	char tmp[100];
-	int opcode, format1, format2;
+	int opcode, format1, format2 = -1;
 	char instr[MAX_INSTRUCTION];
 	while(fgets(tmp,99,fp) != NULL){
+		// Get information of opcode.
+		// If it has two formats, save two formats.
+		// If it has one format, save format2 as -1
 		sscanf(tmp,"%02X %s %d/%d",&opcode,instr,&format1,&format2);
 		set_hashtable(instr,opcode,format1,format2);
 		format2 = -1;
 	}
 }
 
+// Search mnemonic that saved at hashtable
+// If it doesn't find return NULL
 hash_node* search_mnemonic(const char* key){
-	int hash = hashfunction_murmur(key);
+	int hash = hashfunction_murmur(key); // To find address, use hash function
 	hash_node *tmp = hash_table[hash];
+	// Search mnemonic
 	while(tmp != NULL){
 		if(strcmp(key, tmp->instr) == 0)
 			return tmp;
@@ -30,9 +43,11 @@ hash_node* search_mnemonic(const char* key){
 	return NULL;
 }
 
+// Set mnemonic at hashtable
 void set_hashtable(char* key, int value, int format1, int format2){
-	int hash = hashfunction_murmur(key);
-	if(hash_table[hash] == NULL){
+	int hash = hashfunction_murmur(key); // To set key, use hash function
+	
+	if(hash_table[hash] == NULL){ // If that hash table bucket doesn't allocated memory, allocate it.
 		hash_table[hash] = (hash_node*)malloc(sizeof(hash_node));
 		strcpy(hash_table[hash]->instr,key);
 		hash_table[hash]->opcode = value;
@@ -40,6 +55,8 @@ void set_hashtable(char* key, int value, int format1, int format2){
 		hash_table[hash]->format2 = format2;
 		hash_table[hash]->next = NULL;
 	}
+
+	// If there is hash table bucket, put it in at tail
 	else{
 		hash_node* new_node = (hash_node*)malloc(sizeof(hash_node));
 		hash_node* tmp = hash_table[hash];
@@ -54,6 +71,7 @@ void set_hashtable(char* key, int value, int format1, int format2){
 	}
 }
 
+// Deallocate memories of hash table
 void delete_hashtable(){
 	int i;
 	hash_node *tmp;
@@ -67,6 +85,7 @@ void delete_hashtable(){
 	}
 }
 
+// murmur2 hash function from en.wikipedia.org/wiki/MurmurHash
 unsigned int hashfunction_murmur(const char* key){
 	static const unsigned int c1 = 0xcc9e2d51;
 	static const unsigned int c2 = 0x1b873593;
@@ -119,6 +138,7 @@ unsigned int hashfunction_murmur(const char* key){
 	return hash % MAX_HASH_BUCKET;
 }
 
+// Function for command opcode
 int command_opcode(){
 	hash_node* mnemonic;
 	char* tmp;
@@ -138,7 +158,7 @@ int command_opcode(){
 	return 0;
 }
 
-
+// Print every opcode saved at hash table
 void print_opcode(){
 	int i;
 	hash_node* tmp;
