@@ -85,7 +85,7 @@ void delete_hashtable(){
 	}
 }
 
-// murmur2 hash function from en.wikipedia.org/wiki/MurmurHash
+// murmur2 hash function from http://en.wikipedia.org/wiki/MurmurHash
 unsigned int hashfunction_murmur(const char* key){
 	static const unsigned int c1 = 0xcc9e2d51;
 	static const unsigned int c2 = 0x1b873593;

@@ -120,8 +120,7 @@ void delete_trailing_whitespace(char* str){
 				// Renew length of string.
 				len = strlen(str);
 				// Renew index i
-				if(str[i] == ',') i = idx - 1;
-				else if(trailing_whitespace > 1 || !first_char) i = idx;
+				i = idx;
 			}
 
 			// If a character is ',', do this things.
