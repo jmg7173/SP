@@ -185,8 +185,16 @@ int is_hexa(const char* str, int option){
 	char **wrong = NULL;
 	int length = strlen(str);
 	int comma_check = 0;
-	int i;
+	int i = 0;
 	int result;
+	int zero_idx;
+
+	while(str[i++] == '0');
+	zero_idx = i;
+	
+	//check if number is over integer range.
+	if(strlen(str+zero_idx) > 8)
+		return -1;
 
 	// Check if there is comma and character is in hexadecimal character.
 	for(i = 0; i < length; i++){
