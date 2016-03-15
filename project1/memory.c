@@ -189,7 +189,7 @@ int is_hexa(const char* str, int option){
 	int result;
 	int zero_idx;
 
-	while(str[i++] == '0');
+	while(str[i++] == '0') i++;
 	zero_idx = i;
 	
 	//check if number is over integer range.
