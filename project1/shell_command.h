@@ -1,7 +1,7 @@
 #ifndef _SHELL_COMMAND_H
 #define _SHELL_COMMAND_H
 
-#define HELP_COMMAND_NUM 10
+#define HELP_COMMAND_NUM 13
 #define MAX_COMMAND_LENGTH 511
 
 typedef struct _NODE{

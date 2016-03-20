@@ -15,7 +15,10 @@ static const char *help_commands[HELP_COMMAND_NUM] = {
 	"f[ill] start, end, value",
 	"reset",
 	"opcode mnemonic",
-	"opcodelist"
+	"opcodelist",
+	"assemble filename",
+	"type filename",
+	"symbol"
 };
 
 // Print current directory's file and directories.
