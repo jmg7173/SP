@@ -153,8 +153,13 @@ int command_opcode(){
 	if(mnemonic == NULL)
 		return 11;
 	
-	else 
-		printf("opcode is %02X\n",mnemonic->opcode);
+	else{ 
+		printf("opcode is %02X ",mnemonic->opcode);
+		if(mnemonic->format2 != -1)
+			printf("format : %d, %d\n",mnemonic->format1,mnemonic->format2);
+		else
+			printf("format : %d\n",mnemonic->format1);
+	}
 	return 0;
 }
 

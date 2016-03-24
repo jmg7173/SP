@@ -1,9 +1,6 @@
 #ifndef _MEMORY_H_
 #define _MEMORY_H_
 
-#define MAX_MEMORY 1048576
-#define DEFAULT_READ_MEMORY 159 
-
 int command_dump();
 int command_edit();
 int command_fill();

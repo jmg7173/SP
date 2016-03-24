@@ -1,4 +1,5 @@
 #include "memory.h"
+#include "constant.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

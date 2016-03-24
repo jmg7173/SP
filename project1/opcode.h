@@ -1,8 +1,7 @@
 #ifndef _OPCODE_H_
 #define _OPCODE_H_
 
-#define MAX_INSTRUCTION 10
-#define MAX_HASH_BUCKET 20
+#include "constant.h"
 
 typedef struct _HASH_NODE{
 	int opcode;

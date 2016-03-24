@@ -1,12 +1,11 @@
 #ifndef _SHELL_COMMAND_H
 #define _SHELL_COMMAND_H
 
-#define HELP_COMMAND_NUM 13
-#define MAX_COMMAND_LENGTH 511
+#include "constant.h"
 
 typedef struct _NODE{
 	int idx;
-	char command[MAX_COMMAND_LENGTH + 1];
+	char command[MAX_STR_LENGTH + 1];
 	struct _NODE* next;
 }history_node;
 history_node* history_linked_list;
