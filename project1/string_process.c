@@ -72,3 +72,66 @@ void delete_trailing_whitespace(char* str){
 		}
 	}
 }
+
+// Check if given string is hexadecimal
+// If option == 1, range : 0x00000~0xFFFFF
+// If option == 2, range : 0x00~0xFF
+int is_hexa(const char* str, int option){
+	char **wrong = NULL;
+	int length = strlen(str);
+	int comma_check = 0;
+	int i = 0;
+	int result;
+	int zero_idx;
+
+	while(str[i] == '0') i++;
+	zero_idx = i;
+	
+	//check if number is over integer range.
+	if(strlen(str+zero_idx) > 8)
+		return -1;
+	
+	// Check if there is comma and character is in hexadecimal character.
+	for(i = 0; i < length; i++){
+		if(str[i] == ',') comma_check++;
+		else if(!is_in_range(str[i]))
+			return -1;
+	}
+	
+	// If comma has above than 1, it is invalid.
+	if(comma_check > 1) return -2;
+	
+	// Convert string to hexadecimal number
+	result = strtol(str,wrong,16);
+	
+	// Check range of hexadecimal number
+	if(result < 0 || result > 0xFFFFF)
+		return -1;
+
+	// If option is 2, range is 00 ~ FF
+	else if(option == 2 && (result < 0 || result > 0xFF))
+		return -1;
+
+	return result;
+}
+
+// Check if given character is in range of 0~9 or a~f or A~F
+// 0 : Valid, 1 : Invalid.
+int is_in_range(const char c){
+	if( (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'))
+		return 1;
+	return 0;
+}
+
+// Check number of comma
+int comma_check(const char* str){
+	int length = strlen(str);
+	int i;
+	int comma_check = 0;
+	for(i = 0; i < length; i++)
+		if(str[i] == ',') comma_check++;
+	
+	return comma_check;
+}
+
+
