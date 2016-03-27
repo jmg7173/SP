@@ -115,6 +115,40 @@ int is_hexa(const char* str, int option){
 	return result;
 }
 
+int is_decimal(const char* str){
+	int length = strlen(str);
+	int comma_check = 0;
+	int i = 0;
+	int result;
+	int zero_idx;
+
+	while(str[i] == '0') i++;
+	zero_idx = i;
+	
+	//check if number is over integer range.
+	if(strlen(str+zero_idx) > 8)
+		return -1;
+	
+	// Check if there is comma and character is in hexadecimal character.
+	for(i = 0; i < length; i++){
+		if(str[i] == ',') comma_check++;
+		else if(!(str[i] >= '0' && str[i] <= '9'))
+			return -1;
+	}
+	
+	// If comma has above than 1, it is invalid.
+	if(comma_check > 1) return -2;
+	
+	// Convert string to hexadecimal number
+	result = atoi(str);
+	
+	// Check range of hexadecimal number
+	if(result < 0 || result > 0xFFFFF)
+		return -1;
+
+	return result;
+}
+
 // Check if given character is in range of 0~9 or a~f or A~F
 // 0 : Valid, 1 : Invalid.
 int is_in_range(const char c){

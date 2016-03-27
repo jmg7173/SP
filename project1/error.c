@@ -50,6 +50,9 @@ int print_error(char* command, int status){
 							fprintf(stderr, "Error : %s doesn't exist file.\n",tmp);
 							break;
 						}
+		case 13:
+						fprintf(stderr, "Error : Can't make immediate file.\n");
+						break;
 		default:
 						break;
 	}
