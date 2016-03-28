@@ -15,8 +15,9 @@ static const char *directives[DIRECTIVE_NUM] = {
 	"RESW"
 };
 
-static symbol_table *symbols;
+static symbol_table *symbols = NULL;
 static symbol_table *tmp_table = NULL;
+static symbol_table *symbol_head;
 
 FILE* open_file(int *err, char* filename){
 	FILE *fp;
@@ -69,6 +70,7 @@ int command_assemble(){
 	int curr_loc;
 	int first_command = 0;
 	int start_loc;
+	int i;
 	assemble_table *commands;
 
 	tmp = strtok(NULL, " ");
@@ -137,10 +139,19 @@ int command_assemble(){
 	lst_filename = make_lst(commands, line, filename); 
 	obj_filename = make_obj(commands, line, filename, start_loc, curr_loc);
 	printf("\toutput file : [%s], [%s]\n",lst_filename,obj_filename);
+	for(i = 0; i<line; i++){
+		if(!strcmp(commands[i].mnemonic,"BYTE"))
+			free(commands[i].obj_byte);
+	}
+	free(commands);
+	free(lst_filename);
+	free(obj_filename);
+	delete_at_symbol_table();
+	delete_at_tmp_symbol();
 	return 0;
 }
 
-int command_symbol(){
+void command_symbol(){
 	symbol_table *tmp = symbols;
 	int cnt = 0;
 	while(tmp != NULL){
@@ -148,8 +159,9 @@ int command_symbol(){
 		tmp = tmp->next;
 		cnt++;
 	}
-	if(cnt == 0) return -1;
-	return 0;
+	if(cnt == 0){
+		printf("No symbols.\n");
+	}
 }
 
 /**** Pass 1 ****/
@@ -706,6 +718,75 @@ void add_at_tmp_symbol(const char *str, int curr_loc, int line){
 		strcpy(new_node->symbol, str);
 		new_node->next = NULL;
 		tmp->next = new_node;
+	}
+}
+
+void add_at_symbol_table(const char* str, int curr_loc, int line){
+	symbol_table *new_node;
+	symbol_table *tmp = symbol_head;
+	if(symbols == NULL){
+		new_node = (symbol_table*)malloc(sizeof(symbol_table));
+		new_node->line = line;
+		new_node->loc = curr_loc;
+		strcpy(new_node->symbol, str);
+		new_node->next = NULL;
+		symbols = new_node;
+		symbol_head = symbols;
+	}
+	else{
+		new_node = (symbol_table*)malloc(sizeof(symbol_table));
+		new_node->line = line;
+		new_node->loc = curr_loc;
+		strcpy(new_node->symbol, str);
+		while(tmp->next != NULL){
+			if(strcmp(tmp->symbol, str) > 0){
+				if(strcmp(tmp->next->symbol, str) < 0){
+					new_node->next = tmp->next;
+					tmp->next = new_node;
+					break;
+				}
+				else
+					tmp = tmp->next;
+			}
+			else{
+				if(tmp == symbol_head){
+					new_node->next = tmp;
+					symbol_head = symbols = new_node;
+					break;
+				}
+			}
+		}
+		if(tmp == symbol_head){
+			if(strcmp(tmp->symbol, str) > 0){
+				new_node = tmp->next;
+				tmp->next = new_node;
+			}
+			else{
+				new_node->next = tmp;
+				symbol_head = symbols = new_node;
+			}
+		}
+	}
+}
+
+void delete_at_symbol_table(){
+	symbol_table *tmp;
+	tmp = symbols;
+	while(tmp != NULL){
+		tmp = symbols->next;
+		free(symbols);
+		symbols = tmp;
+	}
+}
+
+void delete_at_tmp_symbol(){
+	symbol_table *tmp;
+	tmp = tmp_table;
+	while(tmp != NULL){
+		add_at_symbol_table(tmp->symbol, tmp->loc, tmp->line);
+		tmp = tmp_table->next;
+		free(tmp_table);
+		tmp_table = tmp;
 	}
 }
 

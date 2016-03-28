@@ -27,12 +27,16 @@ typedef struct TABLE{
 }symbol_table;
 
 FILE* open_file(int*, char*);
-int command_symbol();
+void command_symbol();
 int command_type();
 int command_assemble();
 assemble_table line_to_command(char*, int*, int*, int);
 symbol_table* find_at_symbol(const char*);
 void add_at_tmp_symbol(const char*, int, int);
+void add_at_symbol_table(const char*, int, int);
+void delete_at_symbol_table();
+void delete_at_tmp_symbol();
+
 void create_objectcode(assemble_table *commands, int line, int *error);
 int bit_reg(char reg);
 char* make_lst(assemble_table *commands, int line, char *filename);

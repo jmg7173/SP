@@ -82,6 +82,7 @@ int main(){
 void quit_program(){
 	delete_history_linked_list();
 	delete_hashtable();
+	delete_at_symbol_table();
 }
 
 // Process associated with command that contains whitespace 
