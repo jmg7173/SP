@@ -75,8 +75,9 @@ void add_to_history(const char* str){
 	strcpy(new_node->command, str);
 	if(history_linked_list == NULL){
 		new_node->idx = 1;
+		new_node->next = NULL;
 		history_linked_list = new_node;
-		history_head = new_node; 
+		history_head = new_node;
 	}
 	else{
 		new_node->idx = history_linked_list->idx + 1;

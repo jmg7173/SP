@@ -4,10 +4,6 @@
 #include <stdio.h>
 #include "constant.h"
 
-// TODO : 구조체 이름
-// 주석은 어떤식으로 저장?
-// 명령어?를 어떻게 저장? 동적할당 배열 vs linked list
-// symbol table을 hash로 해야하나? 아니면 linked list?
 typedef struct{
 	char symbol[MAX_INSTRUCTION];
 	char mnemonic[MAX_INSTRUCTION];
@@ -32,8 +28,8 @@ FILE* open_file(int*, char*);
 int command_symbol();
 int command_type();
 int command_assemble();
-assemble_table line_to_command(char*, int*, int*, int);
-symbol_table* find_at_symbol(const char*);
-void add_at_symbol(const char*, int, int);
+assemble_table line_to_command(char*, int*, int*, int, symbol_table*);
+symbol_table* find_at_symbol(const char*, symbol_table*);
+void add_at_symbol(const char*, int, int, symbol_table*);
 
 #endif

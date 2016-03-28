@@ -57,6 +57,7 @@ int command_assemble(){
 	int curr_loc;
 	int first_command = 0;
 	assemble_table *commands;
+	symbol_table *tmp_tab = NULL;
 
 	tmp = strtok(NULL, " ");
 
@@ -69,6 +70,7 @@ int command_assemble(){
 	commands = (assemble_table*)calloc(1,sizeof(assemble_table));
 	while(!feof(fp)){
 		length = 0;
+		memset(str_line,0,MAX_STR_LENGTH);
 		if(!strcmp(commands[line-1].mnemonic,"END")) break;
 		/**** Read a line ****/
 		while((c = fgetc(fp)) != '\n' && c != EOF){
@@ -77,15 +79,29 @@ int command_assemble(){
 			str_line[length++] = (char)c;
 		}
 		str_line[length] = '\0';
-		printf("%s\n",str_line);
+		
 		delete_trailing_whitespace(str_line);
 		line++;
 		if(line != 1)
 			commands = (assemble_table*)realloc(commands,sizeof(assemble_table)*line);
 		
 		/**** Add at commands ****/
-		commands[line-1] = line_to_command(str_line, &error, &curr_loc, line);
-		
+		commands[line-1] = line_to_command(str_line, &error, &curr_loc, line, tmp_tab);
+		printf("%s\t%s\t%s",
+				commands[line-1].symbol,
+				commands[line-1].mnemonic,
+				commands[line-1].param1
+				);
+		if(commands[line-1].use_X){
+			printf("X\t");
+		}
+		else printf("\t");
+		printf("loc : %04X\t line : %d\t opcode : %02X\t format : %d\t\n",
+				commands[line-1].loc,
+				commands[line-1].line,
+				commands[line-1].opcode,
+				commands[line-1].format
+				);
 		/* At first line, check if it is START 
 		 * If it is START, curr_loc = START's parameter
 		 * else, curr_loc = 0
@@ -107,9 +123,15 @@ int command_assemble(){
 		/**** Update current location ****/
 		curr_loc += commands[line-1].format;
 	}
+	if(curr_loc > 0xFFFFF){
+		fprintf(stderr, "Error : assemble location is out of memory.\n");
+		error++;
+	}
 	if(error){
 		return 13;
 	}
+
+//	create_objectcode(commands, line, &error);
 	return 0;
 }
 
@@ -125,7 +147,8 @@ int command_symbol(){
 	return 0;
 }
 
-assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
+/**** Pass 1 ****/
+assemble_table line_to_command(char* str, int* error, int* curr_loc, int line, symbol_table *symtab){
 	/**** Usable registers
 	 * X, A, S, T
 	 */
@@ -144,7 +167,7 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 	int flag_directive = 0;
 	int numtmp;
 	int comma_checker;
-	assemble_table new_table;
+	assemble_table new_table = {.symbol = {0}, .mnemonic = {0}, .loc = 0};
 	hash_node* node_tmp = NULL;
 
 	tmp = strtok(str," "); // First String
@@ -187,7 +210,7 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 	 * mnemonic : directive(END, BASE, NOBASE) else -> Error
 	 * loc : -1
 	 * line : line*5
-	 * opcode : -1
+	 * opcode : -1 if object code needed else -2
 	 * format : 0
 	 * param1 : numbers
 	 * use_X : 0
@@ -203,7 +226,7 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 		tmp = strtok(NULL, " ");
 		strcpy(new_table.param1,tmp);
 		
-		new_table.opcode = -1;
+		new_table.opcode = -2;
 		new_table.format = 0;
 		new_table.loc = -1;
 		new_table.line = line*5;
@@ -240,16 +263,32 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 	}
 	
 	/**** A line with Symbol existing ****/
-	// TODO : symbol table check!!!
 	if(!node_tmp){
-	/*	if(!find_at_symbol(tmp)){
-			fprintf(stderr,"Error : line %d Already exist symbol.\n", line*5);
-			(*error)++;
-		}
-		if(tmp[0] >= '0' && tmp[0] <='9'){
-			fprintf(stderr,"Error : line %d Symbol name must start with alphabet.\n", line*5);
-			(*error)++;
+	/*	if(tmp[0] == '#' || tmp[0] == '@'){
+			if(find_at_symbol(tmp+1, symtab)){
+				fprintf(stderr,"Error : line %d Already exist symbol.\n", line*5);
+				(*error)++;
+			}
+			if(tmp[1] >= '0' && tmp[1] <='9'){
+				fprintf(stderr,"Error : line %d Symbol name must start with alphabet.\n", line*5);
+				(*error)++;
+			}
+			else
+				add_at_symbol(tmp+1, *curr_loc, line*5, symtab);
+
 		}*/
+//		else{
+			if(find_at_symbol(tmp, symtab)){
+				fprintf(stderr,"Error : line %d Already exist symbol.\n", line*5);
+				(*error)++;
+			}
+			if(tmp[0] >= '0' && tmp[0] <='9'){
+				fprintf(stderr,"Error : line %d Symbol name must start with alphabet.\n", line*5);
+				(*error)++;
+			}
+			else
+				add_at_symbol(tmp+1, *curr_loc, line*5, symtab);
+//		}
 		strcpy(new_table.symbol,tmp);
 	}
 
@@ -415,7 +454,7 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 									}
 									*curr_loc = numtmp;
 									new_table.format = 0;
-									new_table.opcode = -1;
+									new_table.opcode = -2;
 									strcpy(new_table.param1, tmp);
 									if((tmp = strtok(NULL, " "))){
 										fprintf(stderr, "Error : line %d Too much commands.\n", line*5);
@@ -428,7 +467,6 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 								 * BYTE : X'  '  <- up to 60, only odd characters as hexa
 								 *     or C'  '  <- up to 30 characters as ASCII
 								 * WORD : number <- up to ?? characters as decimal
-								 *     or C'  '  <- only 3 characters as ASCII
 								 */
 
 								/* TODO : How to parsing numbers or ASCII inside ' '							 
@@ -437,9 +475,37 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 								 *        										  	Doesn't exist ' '
 								 */
 				case 4: {
+									strcpy(new_table.param1, tmp+strlen(tmp)+1);
+									numtmp = direc_byte_check(new_table.param1);
+									if(numtmp <= 0){
+										fprintf(stderr, "Error : line %d Invalid BYTE value.\n", line*5);
+										(*error)++;
+									}
+									new_table.format = numtmp;
+									new_table.opcode = -1;
 									break;
 								}
 				case 5: {
+									tmp = strtok(NULL, " ");
+
+									comma_checker = comma_check(tmp);
+									if(comma_checker){
+										fprintf(stderr, "Error : line %d Additional parameter doesn't need.\n", line*5);
+										(*error)++;
+									}
+
+									numtmp = is_decimal(tmp);
+									if(numtmp < 0){
+										fprintf(stderr, "Error : line %d Invalid decimal number.\n", line*5);
+										(*error)++;
+									}
+									new_table.format = numtmp;
+									new_table.opcode = -1;
+									strcpy(new_table.param1, tmp);
+									if((tmp = strtok(NULL, " "))){
+										fprintf(stderr, "Error : line %d Too much commands.\n", line*5);
+										(*error)++;
+									}
 									break;
 								}
 								/**** RESB, RESW ****/
@@ -448,10 +514,48 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 								 */
 				case 6: {
 									tmp = strtok(NULL, " ");
+
 									comma_checker = comma_check(tmp);
+									if(comma_checker){
+										fprintf(stderr, "Error : line %d Additional parameter doesn't need.\n", line*5);
+										(*error)++;
+									}
+
+									numtmp = is_decimal(tmp);
+									if(numtmp < 0){
+										fprintf(stderr, "Error : line %d Invalid decimal number.\n", line*5);
+										(*error)++;
+									}
+									new_table.format = numtmp;
+									new_table.opcode = -2;
+									strcpy(new_table.param1, tmp);
+									if((tmp = strtok(NULL, " "))){
+										fprintf(stderr, "Error : line %d Too much commands.\n", line*5);
+										(*error)++;
+									}
 									break;
 								}
 				case 7: {
+									tmp = strtok(NULL, " ");
+
+									comma_checker = comma_check(tmp);
+									if(comma_checker){
+										fprintf(stderr, "Error : line %d Additional parameter doesn't need.\n", line*5);
+										(*error)++;
+									}
+
+									numtmp = is_decimal(tmp) * 3;
+									if(numtmp < 0){
+										fprintf(stderr, "Error : line %d Invalid decimal number.\n", line*5);
+										(*error)++;
+									}
+									new_table.format = numtmp;
+									new_table.opcode = -2;
+									strcpy(new_table.param1, tmp);
+									if((tmp = strtok(NULL, " "))){
+										fprintf(stderr, "Error : line %d Too much commands.\n", line*5);
+										(*error)++;
+									}
 									break;
 								}
 			}
@@ -585,13 +689,42 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 
 }
 
-symbol_table* find_at_symbol(const char *str){
+symbol_table* find_at_symbol(const char *str, symbol_table *symtab_head){
+	symbol_table *tmp = symtab_head;
+	int find = 0;
 
-
-
+	while(tmp){
+		if(!strcmp(tmp->symbol,str)){
+			find = 1;
+			break;
+		}
+		tmp = tmp->next;
+	}
+	if(find){
+		return tmp;
+	}
+	return NULL;
 }
 
-void add_at_symbol(const char *str, int curr_loc, int line){
-
-
+void add_at_symbol(const char *str, int curr_loc, int line, symbol_table *symtab_head){
+	symbol_table *new_node;
+	symbol_table *tmp = symtab_head;
+	if(!symtab_head){
+		symtab_head = (symbol_table*)calloc(1,sizeof(symbol_table));
+		symtab_head->line = line;
+		symtab_head->loc = curr_loc;
+		strcpy(symtab_head->symbol, str);
+		symtab_head->next = NULL;
+	}
+	else{
+		new_node = (symbol_table*)calloc(1,sizeof(symbol_table));
+		while(tmp->next != NULL){
+			tmp = tmp->next;
+		}
+		new_node->line = line;
+		new_node->loc = curr_loc;
+		strcpy(new_node->symbol, str);
+		new_node->next = NULL;
+		tmp->next = new_node;
+	}
 }

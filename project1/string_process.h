@@ -6,5 +6,6 @@ int is_hexa(const char*, int);
 int is_decimal(const char*);
 int comma_check(const char*);
 int is_in_range(const char);
+int direc_byte_check(const char*);
 
 #endif

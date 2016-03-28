@@ -1,5 +1,6 @@
 #include "string_process.h"
 #include "constant.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -9,6 +10,7 @@ void delete_trailing_whitespace(char* str){
 	int i, len;
 	int idx;
 	int first_char = 0;
+	int sep_flag = 0;
 
 	len = strlen(str);
 	for(i = 0; i <= len; i++){
@@ -22,6 +24,14 @@ void delete_trailing_whitespace(char* str){
 
 		// If a character is whitespace(' ', '\t'), increase whitespace flag.
 		// If whitespace is '\t', convert it to ' '
+		if(str[i] == '\''){
+			sep_flag++;
+			trailing_whitespace = 0;
+			if(sep_flag == 2) sep_flag = 0;
+		}
+		if(sep_flag) 
+			continue;	
+
 		if(str[i] == ' ' || str[i] == '\t'){
 			trailing_whitespace++;
 			if(str[i] == '\t') str[i] = ' ';
@@ -129,7 +139,7 @@ int is_decimal(const char* str){
 	if(strlen(str+zero_idx) > 8)
 		return -1;
 	
-	// Check if there is comma and character is in hexadecimal character.
+	// Check if there is comma and character is in decimal character.
 	for(i = 0; i < length; i++){
 		if(str[i] == ',') comma_check++;
 		else if(!(str[i] >= '0' && str[i] <= '9'))
@@ -139,10 +149,10 @@ int is_decimal(const char* str){
 	// If comma has above than 1, it is invalid.
 	if(comma_check > 1) return -2;
 	
-	// Convert string to hexadecimal number
+	// Convert string to decimal number
 	result = atoi(str);
 	
-	// Check range of hexadecimal number
+	// Check range of decimal number
 	if(result < 0 || result > 0xFFFFF)
 		return -1;
 
@@ -168,4 +178,29 @@ int comma_check(const char* str){
 	return comma_check;
 }
 
-
+int direc_byte_check(const char* str){
+	int byte = 0;
+	int i;
+	int len = strlen(str);
+	int sep_num = 0;
+	if(str[0] == 'C' || str[0] == 'X'){
+		for(i = 1; i<len; i++){
+			if(str[i] == '\'') sep_num++;
+		}
+		if(!(sep_num == 2 && str[1] == '\'' && str[len-1] == '\''))
+			return -1;
+		byte = len-3;
+		if(str[0] == 'C'){
+			if(byte > 30)
+				return -1;
+			return byte;
+		}
+		else if(str[0] == 'X'){
+			if(!(byte % 2) && byte / 2 <=30)
+				return byte/2;
+			else
+				return -1;
+		}
+	}
+	return -1;
+}
