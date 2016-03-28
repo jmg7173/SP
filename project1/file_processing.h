@@ -15,6 +15,8 @@ typedef struct{
 	char reg1;
 	char reg2;
 	int use_X;
+	int objectcode;
+	char *obj_byte;
 }assemble_table;
 
 typedef struct TABLE{
@@ -28,8 +30,13 @@ FILE* open_file(int*, char*);
 int command_symbol();
 int command_type();
 int command_assemble();
-assemble_table line_to_command(char*, int*, int*, int, symbol_table*);
-symbol_table* find_at_symbol(const char*, symbol_table*);
-void add_at_symbol(const char*, int, int, symbol_table*);
+assemble_table line_to_command(char*, int*, int*, int);
+symbol_table* find_at_symbol(const char*);
+void add_at_tmp_symbol(const char*, int, int);
+void create_objectcode(assemble_table *commands, int line, int *error);
+int bit_reg(char reg);
+char* make_lst(assemble_table *commands, int line, char *filename);
+char* make_obj(assemble_table* commands, int line, char* filename, int start, int end);
+int size_in_a_line(assemble_table* commands, int start, int line);
 
 #endif
