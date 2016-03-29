@@ -52,6 +52,13 @@ Commands that can use in sicsim
 			- Show opcodes that saved at hash table 
 		- opcode mnemonic
 			- Show opcode of mnemonic
+	- Assemble commands
+	  - type filename
+		  - Show file contents
+		- assemble filename
+		  - Assembling a file
+		- symbol
+		  - Show symbol table of last assemble successed file's symbol table
 
 [WARNING]
 	- Every numbers are hexadecimal numbers

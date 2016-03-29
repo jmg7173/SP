@@ -19,6 +19,11 @@ static symbol_table *symbols = NULL;
 static symbol_table *tmp_table = NULL;
 static symbol_table *symbol_head;
 
+
+/* Description : open file
+ * Return value : File pointer
+ * if error occurs, *err represent error code
+ */
 FILE* open_file(int *err, char* filename){
 	FILE *fp;
 	char *tmp;
@@ -37,6 +42,10 @@ FILE* open_file(int *err, char* filename){
 	return fp;
 }
 
+/* Description : print file content
+ * return value : if error, return error value
+ *                if do well, return 0
+ */
 int command_type(){
 	FILE *fp;
 	int c, error = 0;
@@ -57,6 +66,9 @@ int command_type(){
 	return 0;
 }
 
+/* Description : assemble file
+ * return value : error code
+ */
 int command_assemble(){
 	FILE* fp;
 	char str_line[MAX_STR_LENGTH];
@@ -86,6 +98,7 @@ int command_assemble(){
 		length = 0;
 		memset(str_line,0,MAX_STR_LENGTH);
 		if(!strcmp(commands[line-1].mnemonic,"END")) break;
+		
 		/**** Read a line ****/
 		while((c = fgetc(fp)) != '\n' && c != EOF){
 			if(length >= MAX_STR_LENGTH)
@@ -132,13 +145,18 @@ int command_assemble(){
 		return 13;
 	}
 
+	/**** Pass 2 ****/
 	create_objectcode(commands, line, &error);
 	if(error){
 		return 14;
 	}
+
+	/**** Create .lst, .obj files ****/
 	lst_filename = make_lst(commands, line, filename); 
 	obj_filename = make_obj(commands, line, filename, start_loc, curr_loc);
 	printf("\toutput file : [%s], [%s]\n",lst_filename,obj_filename);
+	
+	/**** Free memories ****/
 	for(i = 0; i<line; i++){
 		if(!strcmp(commands[i].mnemonic,"BYTE"))
 			free(commands[i].obj_byte);
@@ -146,11 +164,17 @@ int command_assemble(){
 	free(commands);
 	free(lst_filename);
 	free(obj_filename);
+	
+	/* Delete temporary constructed symbol table 
+	 * Delete existing symbol table
+	 * make new symbol table for command symbol
+	 */
 	delete_at_symbol_table();
 	delete_at_tmp_symbol();
 	return 0;
 }
 
+/**** Description : execute command symbol ****/
 void command_symbol(){
 	symbol_table *tmp = symbols;
 	int cnt = 0;
@@ -238,6 +262,7 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 		new_table.loc = -1;
 		new_table.line = line*5;
 		
+		/**** Need just one parameter ****/
 		if((tmp = strtok(NULL, " "))) {
 			fprintf(stderr,"Error : line %d Too much parameter.\n",line*5);
 			(*error)++;
@@ -423,7 +448,6 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 			strcpy(new_table.mnemonic, tmp);
 			switch(i){
 				/**** START ****/
-				// TODO : START directive must have symbol???
 				case 3: {
 									/* format, param1 */
 									tmp = strtok(NULL, " ");
@@ -461,10 +485,9 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 								 * WORD : number <- up to ?? characters as decimal
 								 */
 
-								/* TODO : How to parsing numbers or ASCII inside ' '							 
-								 *        How to manage errors! : Too much/less characters, 
-								 *        										  	Doesn't exist X or C,
-								 *        										  	Doesn't exist ' '
+								/* Have to check : Too much/less characters, 
+								 *	               Doesn't exist X or C,
+								 *        				 Doesn't exist ' '
 								 */
 				case 4: {
 									strcpy(new_table.param1, tmp+strlen(tmp)+1);
@@ -681,6 +704,7 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 
 }
 
+/**** Find symbol at tmp_table(tmp symbol table) ****/
 symbol_table* find_at_symbol(const char *str){
 	symbol_table *tmp = tmp_table;
 	int find = 0;
@@ -697,6 +721,7 @@ symbol_table* find_at_symbol(const char *str){
 	return NULL;
 }
 
+/**** Add symbol at tmp symbol table ****/
 void add_at_tmp_symbol(const char *str, int curr_loc, int line){
 	symbol_table *new_node;
 	symbol_table *tmp = tmp_table;
@@ -721,6 +746,7 @@ void add_at_tmp_symbol(const char *str, int curr_loc, int line){
 	}
 }
 
+/**** Add symbol at symbol table as descending order ****/
 void add_at_symbol_table(const char* str, int curr_loc, int line){
 	symbol_table *new_node;
 	symbol_table *tmp = symbol_head;
@@ -769,6 +795,7 @@ void add_at_symbol_table(const char* str, int curr_loc, int line){
 	}
 }
 
+/**** Free memory of symbol table ****/
 void delete_at_symbol_table(){
 	symbol_table *tmp;
 	tmp = symbols;
@@ -779,6 +806,7 @@ void delete_at_symbol_table(){
 	}
 }
 
+/**** Free memory of tmp symbol table ****/
 void delete_at_tmp_symbol(){
 	symbol_table *tmp;
 	tmp = tmp_table;
@@ -790,6 +818,8 @@ void delete_at_tmp_symbol(){
 	}
 }
 
+/**** Pass 2 ****/
+/**** Create object code ****/
 void create_objectcode(assemble_table *commands, int line, int *error){
 	int i, j;
 	int pc, b = -1;
@@ -803,10 +833,11 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 	for(i = 0; i<line; i++){
 		if(commands[i].opcode >= -1){
 			objcode = 0;
+			/**** If mnemonic is LDB, set base register ****/
 			if(!strcmp(commands[i].mnemonic,"LDB")){
 				sym_tmp = find_at_symbol(commands[i].param1+1);
 				if(!sym_tmp){
-					fprintf(stderr,"Error : line %d Doesn't exist symbol.1\n",(i+1)*5);
+					fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
 					(*error)++;
 				}
 				else{
@@ -814,6 +845,7 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 				}
 			}	
 			
+			/**** set PC register ****/
 			j = i+1;
 			while(j<line){
 				if(commands[j].opcode != -2){
@@ -830,6 +862,7 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 				loc_diff = 0;
 
 				objcode += commands[i].opcode;
+				
 				/**** for format 3, 4 ****/
 				if(commands[i].format == 3 || commands[i].format == 4){
 					if(commands[i].format == 4)
@@ -841,45 +874,54 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 					}
 
 					switch(commands[i].param1[0]){
+						/**** Immediate addressing ****/
 						case '#':
+							/**** set ni = 01 ****/
 							objcode |= 0x1;
+							/**** format 4 ****/
 							if(commands[i].format == 4){
 								if((disp = is_decimal(commands[i].param1+1)) < 0){
 									sym_tmp = find_at_symbol(commands[i].param1+1);
 									if(!sym_tmp){
-										fprintf(stderr,"Error : line %d Doesn't exist symbol.2\n",(i+1)*5);
+										fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
 										(*error)++;
 									}
 									else{
 										disp = sym_tmp->loc;
 									}
 								}
-								disp &= 0xFFFFF;
 							}
+							/**** format 3 ****/
 							else{
+								/**** Find at symbol table ****/
 								if((disp = is_decimal(commands[i].param1+1)) < 0){
 									sym_tmp = find_at_symbol(commands[i].param1+1);
 									if(!sym_tmp){
-										fprintf(stderr,"Error : line %d Doesn't exist symbol.3\n",(i+1)*5);
+										fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
 										(*error)++;
 									}
 									else{
 										loc_diff = sym_tmp->loc - pc;
-										if(loc_diff >= -4096 && loc_diff <= 4095){
+										/**** use PC register relative addressing ****/
+										if(loc_diff >= -2048 && loc_diff <= 2047){
 											xbpe |= 0x2;
 											disp = loc_diff;
 										}
+										/**** Out of PC register range ****/
 										else{
+											/**** Not using base register ****/
 											if(b < 0){
 												fprintf(stderr, "Error : line %d Invalid location. Out of format 3 displacement range.\n", line*5);
 												(*error)++;
 											}
+											/**** use base register relative addressing ****/
 											else{
 												loc_diff = sym_tmp->loc - b;
-												if(loc_diff >= -4096 && loc_diff <= 4095){
+												if(loc_diff >= 0 && loc_diff <= 4095){
 													xbpe |= 0x4;
 													disp = loc_diff;
 												}
+												/**** out of base register range ****/
 												else{
 													fprintf(stderr, "Error : line %d Invalid location. Out of format 3 displacement range.\n", line*5);
 													(*error)++;
@@ -888,37 +930,46 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 										}
 									}
 								}
+								/**** for managing minus displacement ****/
 								disp &= 0xFFF;
 							}
 							break;
+						
+						/**** Indirecting addressing ****/
 						case '@':
+							/**** set ni = 10 ****/
 							objcode |= 0x2;
+							/**** format 4 ****/
 							if(commands[i].format == 4){
 								if((disp = is_decimal(commands[i].param1+1)) < 0){
 									sym_tmp = find_at_symbol(commands[i].param1+1);
 									if(!sym_tmp){
-										fprintf(stderr,"Error : line %d Doesn't exist symbol.4\n",(i+1)*5);
+										fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
 										(*error)++;
 									}
 									else{
 										disp = sym_tmp->loc;
 									}
 								}
-								disp &= 0xFFFFF;
 							}
+							/**** format 3 ****/
 							else{
 								if((disp = is_decimal(commands[i].param1+1)) < 0){
 									sym_tmp = find_at_symbol(commands[i].param1+1);
 									if(!sym_tmp){
-										fprintf(stderr,"Error : line %d Doesn't exist symbol.5\n",(i+1)*5);
+										fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
 										(*error)++;
 									}
 									else{
 										loc_diff = sym_tmp->loc - pc;
+										
+										/**** PC relative addressing ****/
 										if(loc_diff >= -2048 && loc_diff <= 2047){
 											xbpe |= 0x2;
 											disp = loc_diff;
 										}
+
+										/**** base relative addressing ****/
 										else{
 											if(b < 0){
 												fprintf(stderr, "Error : line %d Invalid location. Out of format 3 displacement range.\n", line*5);
@@ -941,34 +992,42 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 								disp &= 0xFFF;
 							}
 							break;
+
+						/**** simple addressing ****/
 						default :
-							objcode |= 3; //simple addressing
+							objcode |= 3;
+							/**** format 4 ****/
 							if(commands[i].format == 4){
 								if((disp = is_decimal(commands[i].param1+1)) < 0){
 									sym_tmp = find_at_symbol(commands[i].param1);
 									if(!sym_tmp){
-										fprintf(stderr,"Error : line %d Doesn't exist symbol.6\n",(i+1)*5);
+										fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
 										(*error)++;
 									}
 									else{
 										disp = sym_tmp->loc;
 									}
 								}
-								disp &= 0xFFFFF;
 							}
+
+							/**** format 3 ****/
 							else{
 								if((disp = is_decimal(commands[i].param1+1)) < 0){
 									sym_tmp = find_at_symbol(commands[i].param1);
 									if(!sym_tmp){
-										fprintf(stderr,"Error : line %d Doesn't exist symbol.7\n",(i+1)*5);
+										fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
 										(*error)++;
 									}
 									else{
 										loc_diff = sym_tmp->loc - pc;
-										if(loc_diff >= -4096 && loc_diff <= 4095){
+										
+										/**** PC relative addressing ****/
+										if(loc_diff >= -2048 && loc_diff <= 2047){
 											xbpe |= 0x2;
 											disp = loc_diff;
 										}
+
+										/**** base relative addressing ****/
 										else{
 											if(b < 0){
 												fprintf(stderr, "Error : line %d Invalid location. Out of format 3 displacement range.\n", line*5);
@@ -976,7 +1035,7 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 											}
 											else{
 												loc_diff = sym_tmp->loc - b;
-												if(loc_diff >= -4096 && loc_diff <= 4095){
+												if(loc_diff >= 0 && loc_diff <= 4095){
 													xbpe |= 0x4;
 													disp = loc_diff;
 												}
@@ -991,8 +1050,10 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 								disp &= 0XFFF;
 							}
 							break;
-					}
-				 	objcode = objcode << 4;
+					} // end switch case
+				 	
+					/**** make object code ****/
+					objcode = objcode << 4;
 					objcode |= xbpe;
 					if(commands[i].format == 4)
 						objcode = objcode << 20;
@@ -1050,6 +1111,7 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 	}
 }
 
+/**** return register address ****/
 int bit_reg(char reg){
 	switch(reg){
 		case 'A':
@@ -1066,6 +1128,7 @@ int bit_reg(char reg){
 	return -1;
 }
 
+/**** make .lst file ****/
 char* make_lst(assemble_table *commands, int line, char *filename){
 	int i, j;
 	FILE *fp;
@@ -1073,6 +1136,7 @@ char* make_lst(assemble_table *commands, int line, char *filename){
 	int file_len;
 	int file_dot = 0;
 
+	/**** create filename.lst file ****/
 	strcpy(lst_filename, filename);
 	file_len = strlen(lst_filename);
 	for(i = file_len - 1; i >= 0; i--){
@@ -1120,6 +1184,8 @@ char* make_lst(assemble_table *commands, int line, char *filename){
 				commands[i].symbol,
 				commands[i].mnemonic
 				);
+
+		/**** format 2 printing ****/
 		if(commands[i].format == 2){
 			if(commands[i].reg2 != '\0')
 				fprintf(fp,"%c, %c\t\t\t",commands[i].reg1,commands[i].reg2);
@@ -1133,8 +1199,11 @@ char* make_lst(assemble_table *commands, int line, char *filename){
 			else
 				fprintf(fp,"\t\t\t");
 		}
+
+		/**** print object code ****/
 		if(commands[i].opcode >= -1){
 			if(strcmp(commands[i].mnemonic,"BYTE")){
+				/**** print mnemonic object code ****/
 				if(strcmp(commands[i].mnemonic,"WORD")){
 					switch(commands[i].format){
 						case 1:
@@ -1151,10 +1220,12 @@ char* make_lst(assemble_table *commands, int line, char *filename){
 							break;
 					}
 				}
+				/**** directive WORD printing ****/
 				else{
 					fprintf(fp,"%06X",commands[i].objectcode);
 				}
 			}
+			/**** directive BYTE printing ****/
 			else{
 				int byte_len = strlen(commands[i].obj_byte);
 				for(j = 0; j<byte_len; j++){
@@ -1168,6 +1239,7 @@ char* make_lst(assemble_table *commands, int line, char *filename){
 	return lst_filename;
 }
 
+/**** make .obj file ****/
 char* make_obj(assemble_table* commands, int line, char* filename, int start, int end){
 	int i, j;
 	FILE *fp;
@@ -1177,6 +1249,7 @@ char* make_obj(assemble_table* commands, int line, char* filename, int start, in
 	int line_size;
 	int curr_print_size;
 	
+	/**** make string that filename.obj ****/
 	strcpy(obj_filename, filename);
 	file_len = strlen(obj_filename);
 	for(i = file_len - 1; i >= 0; i--){
@@ -1197,21 +1270,27 @@ char* make_obj(assemble_table* commands, int line, char* filename, int start, in
 	i = 0;
 	while(strcmp(commands[i].mnemonic,"START")) i++;
 
+	/**** header ****/
 	fprintf(fp,"H%-6s%06X%06X\n",commands[i].symbol,start,end-start);
 	i++;
 	
+	/**** print object code ****/
 	while(i<line){
 		curr_print_size = 0;
+
+		/**** if opcode == -2, ignore ****/
 		if(commands[i].opcode == -2){
 			i++;
 			continue;
 		}
 		
+		/**** get size of a line ****/
 		line_size = size_in_a_line(commands, i, line);
 		if(line_size <= 0) continue;
 		fprintf(fp,"T%06X%02X",commands[i].loc,line_size);
 		
 		for(;i<line; i++){
+			/**** for memory allocation to RESB, RESW ****/
 			if(!strcmp(commands[i].mnemonic,"RESB") ||
 					!strcmp(commands[i].mnemonic,"RESW")){
 				fprintf(fp,"\n");
@@ -1227,6 +1306,7 @@ char* make_obj(assemble_table* commands, int line, char* filename, int start, in
 				break;
 			}
 			
+			/**** print object code ****/
 			if(strcmp(commands[i].mnemonic,"BYTE")){
 				if(strcmp(commands[i].mnemonic,"WORD")){
 					switch(commands[i].format){
@@ -1256,6 +1336,8 @@ char* make_obj(assemble_table* commands, int line, char* filename, int start, in
 			}
 		}
 	}
+
+	/**** print modification record ****/
 	fprintf(fp,"\n");
 	for(i = 0; i<line; i++){
 		if(commands[i].mnemonic[0] == '+'){
@@ -1268,11 +1350,14 @@ char* make_obj(assemble_table* commands, int line, char* filename, int start, in
 			fprintf(fp,"M%06X%02X\n",commands[i].loc+1,commands[i].format+1);
 		}
 	}
+
+	/**** end ****/
 	fprintf(fp,"E%06X\n",start);
 	fclose(fp);
 	return obj_filename;
 }
 
+/**** get size in a line at .obj file ****/
 int size_in_a_line(assemble_table* commands, int start, int line){
 	int i;
 	int size = 0;
