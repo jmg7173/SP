@@ -142,13 +142,15 @@ int command_assemble(){
 		error++;
 	}
 	if(error){
+		delete_at_tmp_symbol(0);
 		return 13;
 	}
 
 	/**** Pass 2 ****/
 	create_objectcode(commands, line, &error);
 	if(error){
-		return 14;
+		delete_at_tmp_symbol(0);
+		return 13;
 	}
 
 	/**** Create .lst, .obj files ****/
@@ -170,7 +172,7 @@ int command_assemble(){
 	 * make new symbol table for command symbol
 	 */
 	delete_at_symbol_table();
-	delete_at_tmp_symbol();
+	delete_at_tmp_symbol(1);
 	return 0;
 }
 
@@ -588,9 +590,9 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 
 	/**** A line with Symbol existing ****/
 	if(!node_tmp){
-		printf("%s\n",tmp);
 		fprintf(stderr, "Error : line %d Unknown mnemonic.\n", line*5);
 		(*error)++;
+		return new_table;
 	}
 
 	/**** Mnemonic that symbol doesn't exist ****/
@@ -807,11 +809,12 @@ void delete_at_symbol_table(){
 }
 
 /**** Free memory of tmp symbol table ****/
-void delete_at_tmp_symbol(){
+void delete_at_tmp_symbol(int option){
 	symbol_table *tmp;
 	tmp = tmp_table;
 	while(tmp != NULL){
-		add_at_symbol_table(tmp->symbol, tmp->loc, tmp->line);
+		if(option == 1)
+			add_at_symbol_table(tmp->symbol, tmp->loc, tmp->line);
 		tmp = tmp_table->next;
 		free(tmp_table);
 		tmp_table = tmp;
