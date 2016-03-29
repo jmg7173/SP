@@ -302,7 +302,7 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 		/**** Format 4 Check ****/
 		/**** format setting ****/
 		if(tmp[0] == '+'){
-			strcpy(new_table.mnemonic, tmp + 1);
+			strcpy(new_table.mnemonic, tmp);
 			if(node_tmp->format2 == 4)
 				new_table.format = 4;
 			else{
@@ -587,7 +587,7 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 	/**** Format 4 Check ****/
 	/**** format setting ****/
 	if(tmp[0] == '+'){
-		strcpy(new_table.mnemonic, tmp + 1);
+		strcpy(new_table.mnemonic, tmp);
 		if(node_tmp->format2 == 4)
 			new_table.format = 4;
 		else{
@@ -1256,7 +1256,19 @@ char* make_obj(assemble_table* commands, int line, char* filename, int start, in
 			}
 		}
 	}
-	fprintf(fp,"\nE%06X\n",start);
+	fprintf(fp,"\n");
+	for(i = 0; i<line; i++){
+		if(commands[i].mnemonic[0] == '+'){
+			if(commands[i].param1[0] == '#' || commands[i].param1[0] == '@'){
+				if(is_decimal(commands[i].param1+1) >= 0) continue;
+			}
+			else{
+				if(is_decimal(commands[i].param1) >= 0) continue;
+			}
+			fprintf(fp,"M%06X%02X\n",commands[i].loc+1,commands[i].format+1);
+		}
+	}
+	fprintf(fp,"E%06X\n",start);
 	fclose(fp);
 	return obj_filename;
 }
