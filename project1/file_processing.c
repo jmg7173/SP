@@ -1089,19 +1089,21 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 					int len = strlen(commands[i].param1);
 					switch(commands[i].param1[0]){
 						case 'C':{
-											 commands[i].obj_byte = (char*)calloc(len-3,sizeof(int));
+											 commands[i].obj_byte = (unsigned char*)calloc(len-3,sizeof(unsigned char));
 											 for(j = 2; j < len-1; j++){
 												 commands[i].obj_byte[j-2] = commands[i].param1[j];
 											 }
+											 commands[i].byte_len = len-3;
 											 break;
 										 }
 						case 'X':{
 											 int tmp;
-											 commands[i].obj_byte = (char*)calloc((len-3)/2,sizeof(int));
+											 commands[i].obj_byte = (unsigned char*)calloc((len-3)/2,sizeof(unsigned char));
 											 for(j = 2; j < len-1; j+=2){
 												 sscanf(commands[i].param1+j,"%02X",&tmp);
 												 commands[i].obj_byte[(j-2)/2] = tmp;
 											 }
+											 commands[i].byte_len = (len-3)/2;
 											 break;
 										 }
 					}
@@ -1227,7 +1229,7 @@ char* make_lst(assemble_table *commands, int line, char *filename){
 			}
 			/**** directive BYTE printing ****/
 			else{
-				int byte_len = strlen(commands[i].obj_byte);
+				int byte_len = commands[i].byte_len;
 				for(j = 0; j<byte_len; j++){
 					fprintf(fp,"%02X",commands[i].obj_byte[j]);
 				}
@@ -1329,7 +1331,7 @@ char* make_obj(assemble_table* commands, int line, char* filename, int start, in
 				}
 			}
 			else{
-				int byte_len = strlen(commands[i].obj_byte);
+				int byte_len = commands[i].byte_len;
 				for(j = 0; j<byte_len; j++){
 					fprintf(fp,"%02X",commands[i].obj_byte[j]);
 				}

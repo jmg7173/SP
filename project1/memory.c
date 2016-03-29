@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 // Declare memory used for sicsim.
-char memory[MAX_MEMORY] = {0};
+unsigned char memory[MAX_MEMORY] = {0};
 
 // Command about dump
 int command_dump(){

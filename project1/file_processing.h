@@ -16,7 +16,8 @@ typedef struct{
 	char reg2;
 	int use_X;
 	int objectcode;
-	char *obj_byte;
+	unsigned char *obj_byte;
+	int byte_len;
 }assemble_table;
 
 typedef struct TABLE{
