@@ -1,8 +1,9 @@
-#include "opcode.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include "opcode.h"
+
 
 // macro for rotate binary numbers for not losing any bit
 #define ROT32(x, y) ((x << y) | (x >> (32 - y)))
@@ -23,8 +24,8 @@ void make_hashtable(){
 		// Get information of opcode.
 		// If it has two formats, save two formats.
 		// If it has one format, save format2 as -1
-		sscanf(tmp,"%02X %s %d/%d",&opcode,instr,&format1,&format2);
-		set_hashtable(instr,opcode,format1,format2);
+		sscanf(tmp,"%02X %s %d/%d", &opcode, instr, &format1, &format2);
+		set_hashtable(instr, opcode, format1, format2);
 		format2 = -1;
 	}
 }
@@ -42,6 +43,22 @@ hash_node* search_mnemonic(const char* key){
 	}
 	return NULL;
 }
+
+// Deallocate memories of hash table
+void delete_hashtable(){
+	int i;
+	hash_node *tmp;
+	for(i = 0; i<MAX_HASH_BUCKET; i++){
+		tmp = hash_table[i];
+		while(tmp != NULL){
+			tmp = hash_table[i]->next;
+			free(hash_table[i]);
+			hash_table[i] = tmp;
+		}
+	}
+}
+
+
 
 // Set mnemonic at hashtable
 void set_hashtable(char* key, int value, int format1, int format2){
@@ -68,20 +85,6 @@ void set_hashtable(char* key, int value, int format1, int format2){
 		new_node->opcode = value;
 		new_node->format1 = format1;
 		new_node->format2 = format2;
-	}
-}
-
-// Deallocate memories of hash table
-void delete_hashtable(){
-	int i;
-	hash_node *tmp;
-	for(i = 0; i<MAX_HASH_BUCKET; i++){
-		tmp = hash_table[i];
-		while(tmp != NULL){
-			tmp = hash_table[i]->next;
-			free(hash_table[i]);
-			hash_table[i] = tmp;
-		}
 	}
 }
 

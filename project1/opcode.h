@@ -2,14 +2,7 @@
 #define _OPCODE_H_
 
 #include "constant.h"
-
-typedef struct _HASH_NODE{
-	int opcode;
-	char instr[MAX_INSTRUCTION];
-	int format1;
-	int format2;
-	struct _HASH_NODE *next;
-}hash_node;
+#include "structures.h"
 
 void make_hashtable();
 void set_hashtable(char*, int, int, int);

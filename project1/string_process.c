@@ -167,6 +167,24 @@ int is_in_range(const char c){
 	return 0;
 }
 
+/**** return register address ****/
+int bit_reg(char reg){
+	switch(reg){
+		case 'A':
+			return 0;
+		case 'X':
+			return 1;
+		case 'S':
+			return 4;
+		case 'T':
+			return 5;
+		case '\0':
+			return 0;
+	}
+	return -1;
+}
+
+
 // Check number of comma
 int comma_check(const char* str){
 	int length = strlen(str);

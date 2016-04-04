@@ -148,18 +148,22 @@ int command_assemble(){
 		error++;
 	}
 	if(error){
+<<<<<<< HEAD:project1/assemble.c
 		for(i = 0; i<line; i++){
 			if(!strcmp(commands[i].mnemonic,"BYTE"))
 				free(commands[i].obj_byte);
 		}
 		free(commands);
 		delete_at_tmp_symbol(0);
+=======
+>>>>>>> parent of 8477871... [BUGFIX]minor bug fix.:project1/file_processing.c
 		return 13;
 	}
 
 	/**** Pass 2 ****/
 	create_objectcode(commands, line, &error);
 	if(error){
+<<<<<<< HEAD:project1/assemble.c
 		for(i = 0; i<line; i++){
 			if(!strcmp(commands[i].mnemonic,"BYTE"))
 				free(commands[i].obj_byte);
@@ -167,6 +171,9 @@ int command_assemble(){
 		free(commands);
 		delete_at_tmp_symbol(0);
 		return 13;
+=======
+		return 14;
+>>>>>>> parent of 8477871... [BUGFIX]minor bug fix.:project1/file_processing.c
 	}
 
 	/**** Create .lst, .obj files ****/
@@ -188,7 +195,7 @@ int command_assemble(){
 	 * make new symbol table for command symbol
 	 */
 	delete_at_symbol_table();
-	delete_at_tmp_symbol(1);
+	delete_at_tmp_symbol();
 	return 0;
 }
 
@@ -670,10 +677,14 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 
 	/**** A line with Symbol existing ****/
 	if(!node_tmp){
+<<<<<<< HEAD:project1/assemble.c
 		error_in_assemble(18, line*5);
 		//fprintf(stderr, "Error : line %d Unknown mnemonic.\n", line*5);
+=======
+		printf("%s\n",tmp);
+		fprintf(stderr, "Error : line %d Unknown mnemonic.\n", line*5);
+>>>>>>> parent of 8477871... [BUGFIX]minor bug fix.:project1/file_processing.c
 		(*error)++;
-		return new_table;
 	}
 
 	/**** Mnemonic that symbol doesn't exist ****/
@@ -911,12 +922,11 @@ void delete_at_symbol_table(){
 }
 
 /**** Free memory of tmp symbol table ****/
-void delete_at_tmp_symbol(int option){
+void delete_at_tmp_symbol(){
 	symbol_table *tmp;
 	tmp = tmp_table;
 	while(tmp != NULL){
-		if(option == 1)
-			add_at_symbol_table(tmp->symbol, tmp->loc, tmp->line);
+		add_at_symbol_table(tmp->symbol, tmp->loc, tmp->line);
 		tmp = tmp_table->next;
 		free(tmp_table);
 		tmp_table = tmp;

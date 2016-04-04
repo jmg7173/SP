@@ -7,5 +7,6 @@ int is_decimal(const char*);
 int comma_check(const char*);
 int is_in_range(const char);
 int direc_byte_check(const char*);
+int bit_reg(char reg);
 
 #endif
