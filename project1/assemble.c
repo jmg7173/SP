@@ -1,6 +1,10 @@
 #include <stdlib.h>
 #include <string.h>
-#include "file_processing.h"
+#include "assemble.h"
+#include "assemble_directive.h"
+#include "assemble_mnemonic.h"
+#include "constant.h"
+#include "error.h"
 #include "opcode.h"
 #include "string_process.h"
 
@@ -71,7 +75,7 @@ int command_type(){
  */
 int command_assemble(){
 	FILE* fp;
-	char str_line[MAX_STR_LENGTH];
+	static char str_line[MAX_STR_LENGTH];
 	char *tmp;
 	char filename[MAX_STR_LENGTH];
 	char *lst_filename, *obj_filename;
@@ -129,7 +133,8 @@ int command_assemble(){
 		
 		if(first_command > 1){
 			if(!strcmp(commands[line-1].mnemonic, "START")){
-				fprintf(stderr, "Error : line %d START directive must be at first line.(except comment)\n", line*5);
+				error_in_assemble(11, line*5);
+//				fprintf(stderr, "Error : line %d START directive must be at first line.(except comment)\n", line*5);
 				error++;
 			}
 		}
@@ -138,10 +143,16 @@ int command_assemble(){
 		curr_loc += commands[line-1].format;
 	}
 	if(curr_loc > 0xFFFFF){
-		fprintf(stderr, "Error : assemble location is out of memory.\n");
+		error_in_assemble(19 ,-1);
+		//		fprintf(stderr, "Error : assemble location is out of memory.\n");
 		error++;
 	}
 	if(error){
+		for(i = 0; i<line; i++){
+			if(!strcmp(commands[i].mnemonic,"BYTE"))
+				free(commands[i].obj_byte);
+		}
+		free(commands);
 		delete_at_tmp_symbol(0);
 		return 13;
 	}
@@ -149,6 +160,11 @@ int command_assemble(){
 	/**** Pass 2 ****/
 	create_objectcode(commands, line, &error);
 	if(error){
+		for(i = 0; i<line; i++){
+			if(!strcmp(commands[i].mnemonic,"BYTE"))
+				free(commands[i].obj_byte);
+		}
+		free(commands);
 		delete_at_tmp_symbol(0);
 		return 13;
 	}
@@ -190,10 +206,29 @@ void command_symbol(){
 	}
 }
 
+void set_command_table(
+		assemble_table *table, 
+		char *mnemonic, 
+		char *param, 
+		int opcode, 
+		int format, 
+		int loc, 
+		int line
+) {
+	if(mnemonic)
+		strcpy((*table).mnemonic, mnemonic);
+	if(param)
+		strcpy((*table).param1, param);
+	(*table).opcode = opcode;
+	(*table).format = format;
+	(*table).loc = loc;
+	(*table).line = line;
+}
+
 /**** Pass 1 ****/
 assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 	/**** Usable registers
-	 * X:1, A:0, S:4, T:5
+	 * A:0, X:1, S:4, T:5
 	 */
 	char *tmp;
 	int i;
@@ -220,18 +255,19 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 	 * function end
 	 */
 	if(!strcmp(tmp,".")){
-		strcpy(new_table.mnemonic,tmp);
+		set_command_table(&new_table, tmp, str+2, -2, 0, -1, line*5);
+		/*strcpy(new_table.mnemonic,tmp);
 		strcpy(new_table.param1,str+2);
 		new_table.opcode = -2;
 		new_table.format = 0;
 		new_table.loc = -1;
-		new_table.line = line*5;
+		new_table.line = line*5;*/
 		return new_table;
 	}
 
 	/**** Is Directive? ****/
-	for(i = 0; i<DIRECTIVE_NUM; i++){
-		if(!strcmp(tmp,directives[i])) {
+	for(i = 0; i < DIRECTIVE_NUM; i++){
+		if(!strcmp(tmp, directives[i])) {
 			flag_directive = 1;
 			break;
 		}
@@ -249,10 +285,12 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 	 * use_X : 0
 	 * function end
 	 */
+	// TODO : to function assemble_table table_directive()
 	if(flag_directive == 1){
 		strcpy(new_table.mnemonic,tmp);
 		if(i > 3){
-			fprintf(stderr, "Error : line %d This directive needs a symbol.\n", line*5);
+			error_in_assemble(12, line*5);
+			//fprintf(stderr, "Error : line %d This directive needs a symbol.\n", line*5);
 			(*error)++;
 		}
 
@@ -266,18 +304,21 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 		
 		/**** Need just one parameter ****/
 		if((tmp = strtok(NULL, " "))) {
-			fprintf(stderr,"Error : line %d Too much parameter.\n",line*5);
+			error_in_assemble(1, line*5);
+			//fprintf(stderr,"Error : line %d Too much parameter.\n",line*5);
 			(*error)++;
 		}
 		if(!strcmp(new_table.mnemonic,"START")){
 			numtmp = is_hexa(new_table.param1,1);
 			if(numtmp < 0){
-				fprintf(stderr,"Error : line %d Invalid address.\n",line*5);
+				error_in_assemble(5, line*5);
+				//fprintf(stderr,"Error : line %d Invalid address.\n",line*5);
 				(*error)++;
 				*curr_loc = 0;
 			}
 			else if(comma_check(new_table.param1)){
-				fprintf(stderr,"Error : line %d Additional parameter doesn't need.\n", line*5);
+				error_in_assemble(3, line*5);
+				//fprintf(stderr,"Error : line %d Additional parameter doesn't need.\n", line*5);
 				(*error)++;
 				*curr_loc = numtmp;
 			}
@@ -299,11 +340,13 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 	/**** A line with Symbol existing ****/
 	if(!node_tmp){
 			if(find_at_symbol(tmp)){
-				fprintf(stderr,"Error : line %d Already exist symbol.\n", line*5);
+				error_in_assemble(8, line*5);
+				//fprintf(stderr,"Error : line %d Already exist symbol.\n", line*5);
 				(*error)++;
 			}
 			if(tmp[0] >= '0' && tmp[0] <='9'){
-				fprintf(stderr,"Error : line %d Symbol name must start with alphabet.\n", line*5);
+				error_in_assemble(10, line*5);
+				//fprintf(stderr,"Error : line %d Symbol name must start with alphabet.\n", line*5);
 				(*error)++;
 			}
 			else
@@ -324,7 +367,7 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 	 * use_X : use
 	 * function end
 	 */
-
+	// TODO : to function assemble_table table_mnemonic()
 	else{
 		/**** Format 4 Check ****/
 		/**** format setting ****/
@@ -333,7 +376,8 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 			if(node_tmp->format2 == 4)
 				new_table.format = 4;
 			else{
-				fprintf(stderr,"Error : line %d This mnemonic doesn't use format 4\n",line * 5);
+				error_in_assemble(17, line*5);
+//				fprintf(stderr,"Error : line %d This mnemonic doesn't use format 4\n",line * 5);
 				(*error)++;
 			}
 		}
@@ -354,7 +398,8 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 		}
 		if(new_table.format == 1){
 			if(tmp){
-				fprintf(stderr,"Error : line %d format 1 mnemonic doesn't need parameter.\n",line*5);
+				error_in_assemble(14, line*5);
+				//fprintf(stderr,"Error : line %d format 1 mnemonic doesn't need parameter.\n",line*5);
 				(*error)++;
 			}
 		}
@@ -364,21 +409,26 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 		/**** reg1 setting ****/
 		if(new_table.format == 2){
 			if(strlen(tmp) > 2){
-				fprintf(stderr,"Error : line %d format 2 mnemonic only have register(X,A,S,T) as parameter1.\n", line*5);
+				error_in_assemble(15, line*5);
+				//fprintf(stderr,"Error : line %d format 2 mnemonic only have register(X,A,S,T) as parameter1.\n", line*5);
 				(*error)++;
 			}
 			else{
 				if(strlen(tmp) == 2){
-					if(tmp[1] == ',' && tmp[0] != 'X' && tmp[0] != 'A' && tmp[0] != 'S' && tmp[0] != 'T'){
-						fprintf(stderr,"Error : line %d format 2 mnemonic only have register(X,A,S,T) as parameter2.\n", line*5);
+					if(tmp[1] == ',' && bit_reg(tmp[0]) < 0){
+					//if(tmp[1] == ',' && tmp[0] != 'X' && tmp[0] != 'A' && tmp[0] != 'S' && tmp[0] != 'T'){
+						error_in_assemble(15, line*5);
+						//fprintf(stderr,"Error : line %d format 2 mnemonic only have register(X,A,S,T) as parameter2.\n", line*5);
 						(*error)++;
 					}
 					else new_table.reg1 = tmp[0];
 				}
-				else if(strcmp(tmp,"X") && strcmp(tmp,"A") && strcmp(tmp,"S") && strcmp(tmp,"T")){
-						fprintf(stderr,"Error : line %d format 2 mnemonic only have register(X,A,S,T) as parameter3.\n", line*5);
+				else if(bit_reg(tmp[0]) < 0){
+				//else if(strcmp(tmp,"X") && strcmp(tmp,"A") && strcmp(tmp,"S") && strcmp(tmp,"T")){
+						error_in_assemble(15, line*5);
+						//fprintf(stderr,"Error : line %d format 2 mnemonic only have register(X,A,S,T) as parameter3.\n", line*5);
 						(*error)++;
-					}
+				}
 				else
 					new_table.reg1 = tmp[0];
 			}
@@ -391,16 +441,18 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 		 *    - If format 2, additional parameter must be registers
 		 *    - If format 1, it must be Error
 		 */
-		if(comma_check(tmp)){
+		if((comma_checker = comma_check(tmp))){
 			if((tmp = strtok(NULL, " "))){
 				if(comma_check(tmp)){
-					fprintf(stderr, "Error : line  %d Too much parameter or comma.\n",line*5);
+					error_in_assemble(1, line*5);
+					//fprintf(stderr, "Error : line  %d Too much parameter or comma.\n",line*5);
 					(*error)++;
 				}
 				/**** use_X setting ****/
 				else if((new_table.format == 4 || new_table.format == 3)){
 					if(strcmp(tmp,"X")){
-						fprintf(stderr, "Error : line %d additional parameter must be X register.\n",line*5);
+						error_in_assemble(16, line*5);
+						//fprintf(stderr, "Error : line %d additional parameter must be X register.\n",line*5);
 						(*error)++;
 					}
 					else
@@ -409,16 +461,31 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 				/**** reg2 setting ****/
 				else if(new_table.format == 2){
 					if(strlen(tmp) != 1){
-						fprintf(stderr,"Error : line %d format 2 mnemonic only have register(X,A,S,T) as parameter4.\n", line*5);
+						error_in_assemble(15, line*5);
+						//fprintf(stderr,"Error : line %d format 2 mnemonic only have register(X,A,S,T) as parameter4.\n", line*5);
 						(*error)++;
 					}
-					else if(strcmp(tmp,"X") && strcmp(tmp,"A") && strcmp(tmp,"S") && strcmp(tmp,"T")){
-						fprintf(stderr,"Error : line %d format 2 mnemonic only have register(X,A,S,T) as parameter5.\n", line*5);
+					else if(bit_reg(tmp[0]) < 0){
+					//else if(strcmp(tmp,"X") && strcmp(tmp,"A") && strcmp(tmp,"S") && strcmp(tmp,"T")){
+						error_in_assemble(15, line*5);
+						//fprintf(stderr,"Error : line %d format 2 mnemonic only have register(X,A,S,T) as parameter5.\n", line*5);
 						(*error)++;
 					}
 					else
 						new_table.reg2 = tmp[0];
 				}
+			}
+			else{
+				error_in_assemble(2, line*5);
+				(*error)++;
+				//fprintf(stderr,"Error : line %d Need more parameter.\n",line*5);
+			}
+		}
+		else{
+			if((tmp = strtok(NULL, " "))){
+				error_in_assemble(4, line*5);
+				(*error)++;
+				//fprintf(stderr,"Error : line %d Need ','.\n", line*5);
 			}
 		}
 
@@ -461,13 +528,15 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 									 */
 									comma_checker = comma_check(tmp);
 									if(comma_checker){
-										fprintf(stderr, "Error : line %d Additional parameter doesn't need.\n", line*5);
+										error_in_assemble(3, line*5);
+//										fprintf(stderr, "Error : line %d Additional parameter doesn't need.\n", line*5);
 										(*error)++;
 									}
 
 									numtmp = is_hexa(tmp,1);
 									if(numtmp < 0){
-										fprintf(stderr, "Error : line %d Invalid hexadecimal number.\n", line*5);
+										error_in_assemble(7, line*5);
+										//fprintf(stderr, "Error : line %d Invalid hexadecimal number.\n", line*5);
 										(*error)++;
 									}
 									*curr_loc = numtmp;
@@ -475,7 +544,8 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 									new_table.opcode = -2;
 									strcpy(new_table.param1, tmp);
 									if((tmp = strtok(NULL, " "))){
-										fprintf(stderr, "Error : line %d Too much commands.\n", line*5);
+										error_in_assemble(1, line*5);
+										//fprintf(stderr, "Error : line %d Too much commands.\n", line*5);
 										(*error)++;
 									}
 									break;
@@ -495,7 +565,8 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 									strcpy(new_table.param1, tmp+strlen(tmp)+1);
 									numtmp = direc_byte_check(new_table.param1);
 									if(numtmp <= 0){
-										fprintf(stderr, "Error : line %d Invalid BYTE value.\n", line*5);
+										error_in_assemble(13 ,line*5);
+										//fprintf(stderr, "Error : line %d Invalid BYTE value.\n", line*5);
 										(*error)++;
 									}
 									new_table.format = numtmp;
@@ -507,20 +578,23 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 
 									comma_checker = comma_check(tmp);
 									if(comma_checker){
-										fprintf(stderr, "Error : line %d Additional parameter doesn't need.\n", line*5);
+										error_in_assemble(3, line*5);
+										//fprintf(stderr, "Error : line %d Additional parameter doesn't need.\n", line*5);
 										(*error)++;
 									}
 
 									numtmp = is_decimal(tmp);
 									if(numtmp < 0){
-										fprintf(stderr, "Error : line %d Invalid decimal number.\n", line*5);
+										error_in_assemble(6, line*5);
+										//fprintf(stderr, "Error : line %d Invalid decimal number.\n", line*5);
 										(*error)++;
 									}
 									new_table.format = numtmp;
 									new_table.opcode = -1;
 									strcpy(new_table.param1, tmp);
 									if((tmp = strtok(NULL, " "))){
-										fprintf(stderr, "Error : line %d Too much commands.\n", line*5);
+										error_in_assemble(1, line*5);
+										//fprintf(stderr, "Error : line %d Too much commands.\n", line*5);
 										(*error)++;
 									}
 									break;
@@ -534,20 +608,23 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 
 									comma_checker = comma_check(tmp);
 									if(comma_checker){
-										fprintf(stderr, "Error : line %d Additional parameter doesn't need.\n", line*5);
+										error_in_assemble(3, line*5);
+										//fprintf(stderr, "Error : line %d Additional parameter doesn't need.\n", line*5);
 										(*error)++;
 									}
 
 									numtmp = is_decimal(tmp);
 									if(numtmp < 0){
-										fprintf(stderr, "Error : line %d Invalid decimal number.\n", line*5);
+										error_in_assemble(6, line*5);
+										//fprintf(stderr, "Error : line %d Invalid decimal number.\n", line*5);
 										(*error)++;
 									}
 									new_table.format = numtmp;
 									new_table.opcode = -2;
 									strcpy(new_table.param1, tmp);
 									if((tmp = strtok(NULL, " "))){
-										fprintf(stderr, "Error : line %d Too much commands.\n", line*5);
+										error_in_assemble(1, line*5);
+										//fprintf(stderr, "Error : line %d Too much commands.\n", line*5);
 										(*error)++;
 									}
 									break;
@@ -557,20 +634,23 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 
 									comma_checker = comma_check(tmp);
 									if(comma_checker){
-										fprintf(stderr, "Error : line %d Additional parameter doesn't need.\n", line*5);
+										error_in_assemble(3, line*5);
+										//fprintf(stderr, "Error : line %d Additional parameter doesn't need.\n", line*5);
 										(*error)++;
 									}
 
 									numtmp = is_decimal(tmp) * 3;
 									if(numtmp < 0){
-										fprintf(stderr, "Error : line %d Invalid decimal number.\n", line*5);
+										error_in_assemble(6, line*5);
+										//fprintf(stderr, "Error : line %d Invalid decimal number.\n", line*5);
 										(*error)++;
 									}
 									new_table.format = numtmp;
 									new_table.opcode = -2;
 									strcpy(new_table.param1, tmp);
 									if((tmp = strtok(NULL, " "))){
-										fprintf(stderr, "Error : line %d Too much commands.\n", line*5);
+										error_in_assemble(1, line*5);
+										//fprintf(stderr, "Error : line %d Too much commands.\n", line*5);
 										(*error)++;
 									}
 									break;
@@ -590,7 +670,8 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 
 	/**** A line with Symbol existing ****/
 	if(!node_tmp){
-		fprintf(stderr, "Error : line %d Unknown mnemonic.\n", line*5);
+		error_in_assemble(18, line*5);
+		//fprintf(stderr, "Error : line %d Unknown mnemonic.\n", line*5);
 		(*error)++;
 		return new_table;
 	}
@@ -616,7 +697,8 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 		if(node_tmp->format2 == 4)
 			new_table.format = 4;
 		else{
-			fprintf(stderr,"Error : line %d This mnemonic doesn't use format 4\n",line * 5);
+			error_in_assemble(17, line*5);
+			//fprintf(stderr,"Error : line %d This mnemonic doesn't use format 4\n",line * 5);
 			(*error)++;
 		}
 	}
@@ -632,7 +714,8 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 	tmp = strtok(NULL, " "); 
 	if(new_table.format == 1){
 		if(tmp){
-			fprintf(stderr,"Error : line %d format 1 mnemonic doesn't need parameter.\n",line*5);
+			error_in_assemble(14, line*5);
+			//fprintf(stderr,"Error : line %d format 1 mnemonic doesn't need parameter.\n",line*5);
 			(*error)++;
 		}
 	}
@@ -642,19 +725,22 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 	/**** reg1 setting ****/
 	if(new_table.format == 2){
 		if(strlen(tmp) > 2){
-			fprintf(stderr,"Error : line %d format 2 mnemonic only have register(X,A,S,T) as parameter6.\n", line*5);
+			error_in_assemble(15, line*5);
+			//fprintf(stderr,"Error : line %d format 2 mnemonic only have register(X,A,S,T) as parameter6.\n", line*5);
 			(*error)++;
 		}
 		else{
 			if(strlen(tmp) == 2){
 				if(tmp[1] == ',' && tmp[0] != 'X' && tmp[0] != 'A' && tmp[0] != 'S' && tmp[0] != 'T'){
-					fprintf(stderr,"Error : line %d format 2 mnemonic only have register(X,A,S,T) as parameter7.\n", line*5);
+					error_in_assemble(15, line*5);
+					//fprintf(stderr,"Error : line %d format 2 mnemonic only have register(X,A,S,T) as parameter7.\n", line*5);
 					(*error)++;
 				}
 				else new_table.reg1 = tmp[0];
 			}
 			else if(strcmp(tmp,"X") && strcmp(tmp,"A") && strcmp(tmp,"S") && strcmp(tmp,"T")){
-				fprintf(stderr,"Error : line %d format 2 mnemonic only have register(X,A,S,T) as parameter8.\n", line*5);
+				error_in_assemble(15, line*5);
+				//fprintf(stderr,"Error : line %d format 2 mnemonic only have register(X,A,S,T) as parameter8.\n", line*5);
 				(*error)++;
 			}
 			else
@@ -672,13 +758,15 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 	if(comma_check(tmp)){
 		if((tmp = strtok(NULL, " "))){
 			if(comma_check(tmp)){
-				fprintf(stderr, "Error : line  %d Too much parameter or comma.\n",line*5);
+				error_in_assemble(1, line*5);
+				//fprintf(stderr, "Error : line  %d Too much parameter or comma.\n",line*5);
 				(*error)++;
 			}
 			/**** use_X setting ****/
 			else if((new_table.format == 4 || new_table.format == 3)){
 				if(strcmp(tmp,"X")){
-					fprintf(stderr, "Error : line %d additional parameter must be X register.\n",line*5);
+					error_in_assemble(16, line*5);
+					//fprintf(stderr, "Error : line %d additional parameter must be X register.\n",line*5);
 					(*error)++;
 				}
 				else
@@ -687,16 +775,30 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 			/**** reg2 setting ****/
 			else if(new_table.format == 2){
 				if(strlen(tmp) != 1){
-					fprintf(stderr,"Error : line %d format 2 mnemonic only have register(X,A,S,T) as parameter9.\n", line*5);
+					error_in_assemble(15, line*5);
+					//fprintf(stderr,"Error : line %d format 2 mnemonic only have register(X,A,S,T) as parameter9.\n", line*5);
 					(*error)++;
 				}
 				else if(strcmp(tmp,"X") && strcmp(tmp,"A") && strcmp(tmp,"S") && strcmp(tmp,"T")){
-					fprintf(stderr,"Error : line %d format 2 mnemonic only have register(X,A,S,T) as parameter10.\n", line*5);
+					error_in_assemble(15, line*5);
+					//fprintf(stderr,"Error : line %d format 2 mnemonic only have register(X,A,S,T) as parameter10.\n", line*5);
 					(*error)++;
 				}
 				else
 					new_table.reg2 = tmp[0];
 			}
+		}
+		else{
+			error_in_assemble(2, line*5);
+			//fprintf(stderr,"Error : line %d Need more parameter.\n",line*5);
+			(*error)++;
+		}
+	}
+	else{
+		if((tmp = strtok(NULL, " "))){
+			error_in_assemble(4, line*5);
+			//fprintf(stderr,"Error : line %d Need ','.\n", line*5);
+			(*error)++;
 		}
 	}
 
@@ -840,7 +942,8 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 			if(!strcmp(commands[i].mnemonic,"LDB")){
 				sym_tmp = find_at_symbol(commands[i].param1+1);
 				if(!sym_tmp){
-					fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
+					error_in_assemble(9, (i+1)*5);
+					//fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
 					(*error)++;
 				}
 				else{
@@ -886,7 +989,8 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 								if((disp = is_decimal(commands[i].param1+1)) < 0){
 									sym_tmp = find_at_symbol(commands[i].param1+1);
 									if(!sym_tmp){
-										fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
+										error_in_assemble(9, (i+1)*5);
+										//fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
 										(*error)++;
 									}
 									else{
@@ -900,7 +1004,8 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 								if((disp = is_decimal(commands[i].param1+1)) < 0){
 									sym_tmp = find_at_symbol(commands[i].param1+1);
 									if(!sym_tmp){
-										fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
+										error_in_assemble(9, (i+1)*5);
+										//fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
 										(*error)++;
 									}
 									else{
@@ -914,7 +1019,8 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 										else{
 											/**** Not using base register ****/
 											if(b < 0){
-												fprintf(stderr, "Error : line %d Invalid location. Out of format 3 displacement range.\n", line*5);
+												error_in_assemble(20, line*5);
+												//fprintf(stderr, "Error : line %d Invalid location. Out of format 3 displacement range.\n", line*5);
 												(*error)++;
 											}
 											/**** use base register relative addressing ****/
@@ -926,7 +1032,8 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 												}
 												/**** out of base register range ****/
 												else{
-													fprintf(stderr, "Error : line %d Invalid location. Out of format 3 displacement range.\n", line*5);
+													error_in_assemble(20, line*5);
+													//fprintf(stderr, "Error : line %d Invalid location. Out of format 3 displacement range.\n", line*5);
 													(*error)++;
 												}
 											}
@@ -947,7 +1054,8 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 								if((disp = is_decimal(commands[i].param1+1)) < 0){
 									sym_tmp = find_at_symbol(commands[i].param1+1);
 									if(!sym_tmp){
-										fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
+										error_in_assemble(9, (i+1)*5);
+										//fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
 										(*error)++;
 									}
 									else{
@@ -960,7 +1068,8 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 								if((disp = is_decimal(commands[i].param1+1)) < 0){
 									sym_tmp = find_at_symbol(commands[i].param1+1);
 									if(!sym_tmp){
-										fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
+										error_in_assemble(9, (i+1)*5);
+										//fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
 										(*error)++;
 									}
 									else{
@@ -975,7 +1084,8 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 										/**** base relative addressing ****/
 										else{
 											if(b < 0){
-												fprintf(stderr, "Error : line %d Invalid location. Out of format 3 displacement range.\n", line*5);
+												error_in_assemble(20, line*5);
+												//fprintf(stderr, "Error : line %d Invalid location. Out of format 3 displacement range.\n", line*5);
 												(*error)++;
 											}
 											else{
@@ -985,7 +1095,8 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 													disp = loc_diff;
 												}
 												else{
-													fprintf(stderr, "Error : line %d Invalid location. Out of format 3 displacement range.\n", line*5);
+													error_in_assemble(20, line*5);
+													//fprintf(stderr, "Error : line %d Invalid location. Out of format 3 displacement range.\n", line*5);
 													(*error)++;
 												}
 											}
@@ -1004,7 +1115,8 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 								if((disp = is_decimal(commands[i].param1+1)) < 0){
 									sym_tmp = find_at_symbol(commands[i].param1);
 									if(!sym_tmp){
-										fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
+										error_in_assemble(9, (i+1)*5);
+										//fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
 										(*error)++;
 									}
 									else{
@@ -1018,7 +1130,8 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 								if((disp = is_decimal(commands[i].param1+1)) < 0){
 									sym_tmp = find_at_symbol(commands[i].param1);
 									if(!sym_tmp){
-										fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
+										error_in_assemble(9, (i+1)*5);
+										//fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
 										(*error)++;
 									}
 									else{
@@ -1033,7 +1146,8 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 										/**** base relative addressing ****/
 										else{
 											if(b < 0){
-												fprintf(stderr, "Error : line %d Invalid location. Out of format 3 displacement range.\n", line*5);
+												error_in_assemble(20, line*5);
+												//fprintf(stderr, "Error : line %d Invalid location. Out of format 3 displacement range.\n", line*5);
 												(*error)++;
 											}
 											else{
@@ -1043,7 +1157,8 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 													disp = loc_diff;
 												}
 												else{
-													fprintf(stderr, "Error : line %d Invalid location. Out of format 3 displacement range.\n", line*5);
+													error_in_assemble(20, line*5);
+													//fprintf(stderr, "Error : line %d Invalid location. Out of format 3 displacement range.\n", line*5);
 													(*error)++;
 												}
 											}
@@ -1116,22 +1231,6 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 	}
 }
 
-/**** return register address ****/
-int bit_reg(char reg){
-	switch(reg){
-		case 'A':
-			return 0;
-		case 'X':
-			return 1;
-		case 'S':
-			return 4;
-		case 'T':
-			return 5;
-		case '\0':
-			return 0;
-	}
-	return -1;
-}
 
 /**** make .lst file ****/
 char* make_lst(assemble_table *commands, int line, char *filename){
