@@ -9,6 +9,7 @@
 #include "opcode.h"
 #include "shell_command.h"
 #include "string_process.h"
+#include "symbol.h"
 
 // In main, get command and call corresponding functions.
 int main(){
