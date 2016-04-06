@@ -42,7 +42,6 @@ symbol_table* find_at_symbol(const char *str){
 void add_at_tmp_symbol(const char *str, int curr_loc, int line){
 	symbol_table *new_node;
 	symbol_table *tmp = tmp_table;
-	printf("%s %X %d\n",str,curr_loc,line);
 	if(tmp_table == NULL){
 		new_node = (symbol_table*)malloc(sizeof(symbol_table));
 		new_node->line = line;
@@ -109,6 +108,10 @@ void add_at_symbol_table(const char* str, int curr_loc, int line){
 				new_node->next = tmp;
 				symbol_head = symbols = new_node;
 			}
+		}
+		else if(tmp->next == NULL){
+			new_node->next = tmp->next;
+			tmp->next = new_node;
 		}
 	}
 }

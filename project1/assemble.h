@@ -15,8 +15,5 @@ void create_objectcode(assemble_table *commands, int line, int *error);
 char* make_lst(assemble_table *commands, int line, char *filename);
 char* make_obj(assemble_table* commands, int line, char* filename, int start, int end);
 int size_in_a_line(assemble_table* commands, int start, int line);
-
-/**** symbol function ****/
-
-
+int obj_format34(assemble_table cmd, int calc_type, int pc, int b, int *error);
 #endif

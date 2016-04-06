@@ -103,10 +103,9 @@ assemble_table line_to_command(char* str, int* error, int* curr_loc, int line){
 					(*error)++;
 				}
 				else{
-					add_at_tmp_symbol(tmp, *curr_loc, line*5);
+					strcpy(symbol,tmp);
 				}	
 				symbol_flag = 1;
-				strcpy(symbol,tmp);
 			}
 			else{
 				error_in_assemble(18, line*5);

@@ -108,6 +108,9 @@ int command_assemble(){
 		 * If it is START, curr_loc = START's parameter
 		 * else, curr_loc = 0
 		 */
+		if(strlen(commands[line-1].symbol)){
+			add_at_tmp_symbol(commands[line-1].symbol, commands[line-1].loc, commands[line-1].line);
+		}
 		if(commands[0].mnemonic[0] != '.') first_command++;
 		
 		if(first_command == 1){
@@ -186,10 +189,7 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 	int i, j;
 	int pc, b = -1;
 	int objcode = 0;
-	int disp;
-	int loc_diff;
-	int xbpe;
-	//int x;	
+	
 	symbol_table *sym_tmp;
 	
 	for(i = 0; i<line; i++){
@@ -200,7 +200,6 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 				sym_tmp = find_at_symbol(commands[i].param1+1);
 				if(!sym_tmp){
 					error_in_assemble(9, (i+1)*5);
-					//fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
 					(*error)++;
 				}
 				else{
@@ -220,227 +219,26 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 
 			/**** object code for mnemonic ****/
 			if(commands[i].opcode >= 0){
-				xbpe = 0;
-				disp = 0;
-				loc_diff = 0;
-
-				objcode += commands[i].opcode;
-				
 				/**** for format 3, 4 ****/
 				if(commands[i].format == 3 || commands[i].format == 4){
-					if(commands[i].format == 4)
-						xbpe |= 0x1;
-
-					if(commands[i].use_X){
-						commands[i].param1[strlen(commands[i].param1)-1] = '\0';
-						xbpe |= 0x8;
-					}
-
 					switch(commands[i].param1[0]){
-						/**** Immediate addressing ****/
 						case '#':
-							/**** set ni = 01 ****/
-							objcode |= 0x1;
-							/**** format 4 ****/
-							if(commands[i].format == 4){
-								if((disp = is_decimal(commands[i].param1+1)) < 0){
-									sym_tmp = find_at_symbol(commands[i].param1+1);
-									if(!sym_tmp){
-										error_in_assemble(9, (i+1)*5);
-										//fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
-										(*error)++;
-									}
-									else{
-										disp = sym_tmp->loc;
-									}
-								}
-							}
-							/**** format 3 ****/
-							else{
-								/**** Find at symbol table ****/
-								if((disp = is_decimal(commands[i].param1+1)) < 0){
-									sym_tmp = find_at_symbol(commands[i].param1+1);
-									if(!sym_tmp){
-										error_in_assemble(9, (i+1)*5);
-										//fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
-										(*error)++;
-									}
-									else{
-										loc_diff = sym_tmp->loc - pc;
-										/**** use PC register relative addressing ****/
-										if(loc_diff >= -2048 && loc_diff <= 2047){
-											xbpe |= 0x2;
-											disp = loc_diff;
-										}
-										/**** Out of PC register range ****/
-										else{
-											/**** Not using base register ****/
-											if(b < 0){
-												error_in_assemble(20, line*5);
-												//fprintf(stderr, "Error : line %d Invalid location. Out of format 3 displacement range.\n", line*5);
-												(*error)++;
-											}
-											/**** use base register relative addressing ****/
-											else{
-												loc_diff = sym_tmp->loc - b;
-												if(loc_diff >= 0 && loc_diff <= 4095){
-													xbpe |= 0x4;
-													disp = loc_diff;
-												}
-												/**** out of base register range ****/
-												else{
-													error_in_assemble(20, line*5);
-													//fprintf(stderr, "Error : line %d Invalid location. Out of format 3 displacement range.\n", line*5);
-													(*error)++;
-												}
-											}
-										}
-									}
-								}
-								/**** for managing minus displacement ****/
-								disp &= 0xFFF;
-							}
+							objcode = obj_format34(commands[i], IMMEDIATE, pc, b, error);
 							break;
-						
-						/**** Indirecting addressing ****/
 						case '@':
-							/**** set ni = 10 ****/
-							objcode |= 0x2;
-							/**** format 4 ****/
-							if(commands[i].format == 4){
-								if((disp = is_decimal(commands[i].param1+1)) < 0){
-									sym_tmp = find_at_symbol(commands[i].param1+1);
-									if(!sym_tmp){
-										error_in_assemble(9, (i+1)*5);
-										//fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
-										(*error)++;
-									}
-									else{
-										disp = sym_tmp->loc;
-									}
-								}
-							}
-							/**** format 3 ****/
-							else{
-								if((disp = is_decimal(commands[i].param1+1)) < 0){
-									sym_tmp = find_at_symbol(commands[i].param1+1);
-									if(!sym_tmp){
-										error_in_assemble(9, (i+1)*5);
-										//fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
-										(*error)++;
-									}
-									else{
-										loc_diff = sym_tmp->loc - pc;
-										
-										/**** PC relative addressing ****/
-										if(loc_diff >= -2048 && loc_diff <= 2047){
-											xbpe |= 0x2;
-											disp = loc_diff;
-										}
-
-										/**** base relative addressing ****/
-										else{
-											if(b < 0){
-												error_in_assemble(20, line*5);
-												//fprintf(stderr, "Error : line %d Invalid location. Out of format 3 displacement range.\n", line*5);
-												(*error)++;
-											}
-											else{
-												loc_diff = sym_tmp->loc - b;
-												if(loc_diff >= 0 && loc_diff <= 4095){
-													xbpe |= 0x4;
-													disp = loc_diff;
-												}
-												else{
-													error_in_assemble(20, line*5);
-													//fprintf(stderr, "Error : line %d Invalid location. Out of format 3 displacement range.\n", line*5);
-													(*error)++;
-												}
-											}
-										}
-									}
-								}
-								disp &= 0xFFF;
-							}
+							objcode = obj_format34(commands[i], INDIRECT, pc, b, error);
 							break;
-
-						/**** simple addressing ****/
 						default :
-							objcode |= 3;
-							/**** format 4 ****/
-							if(commands[i].format == 4){
-								if((disp = is_decimal(commands[i].param1+1)) < 0){
-									sym_tmp = find_at_symbol(commands[i].param1);
-									if(!sym_tmp){
-										error_in_assemble(9, (i+1)*5);
-										//fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
-										(*error)++;
-									}
-									else{
-										disp = sym_tmp->loc;
-									}
-								}
-							}
-
-							/**** format 3 ****/
-							else{
-								if((disp = is_decimal(commands[i].param1+1)) < 0){
-									sym_tmp = find_at_symbol(commands[i].param1);
-									if(!sym_tmp){
-										error_in_assemble(9, (i+1)*5);
-										//fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
-										(*error)++;
-									}
-									else{
-										loc_diff = sym_tmp->loc - pc;
-										
-										/**** PC relative addressing ****/
-										if(loc_diff >= -2048 && loc_diff <= 2047){
-											xbpe |= 0x2;
-											disp = loc_diff;
-										}
-
-										/**** base relative addressing ****/
-										else{
-											if(b < 0){
-												error_in_assemble(20, line*5);
-												//fprintf(stderr, "Error : line %d Invalid location. Out of format 3 displacement range.\n", line*5);
-												(*error)++;
-											}
-											else{
-												loc_diff = sym_tmp->loc - b;
-												if(loc_diff >= 0 && loc_diff <= 4095){
-													xbpe |= 0x4;
-													disp = loc_diff;
-												}
-												else{
-													error_in_assemble(20, line*5);
-													//fprintf(stderr, "Error : line %d Invalid location. Out of format 3 displacement range.\n", line*5);
-													(*error)++;
-												}
-											}
-										}
-									}
-								}
-								disp &= 0XFFF;
-							}
+							objcode = obj_format34(commands[i], SIMPLE, pc, b, error);
 							break;
-					} // end switch case
-				 	
-					/**** make object code ****/
-					objcode = objcode << 4;
-					objcode |= xbpe;
-					if(commands[i].format == 4)
-						objcode = objcode << 20;
-					else
-						objcode = objcode << 12;
-					objcode |= disp;
+					}
 				}
 
 				/**** for format 1 ****/
 				else if(commands[i].format == 1){
 					objcode = commands[i].opcode;
 				}
+				
 				/**** for format 2 ****/
 				else if (commands[i].format == 2){
 					objcode = commands[i].opcode;
@@ -488,6 +286,109 @@ void create_objectcode(assemble_table *commands, int line, int *error){
 	}
 }
 
+int obj_format34(assemble_table cmd, int calc_type, int pc, int b, int *error){
+	int xbpe = 0;
+	int disp = 0;
+	int loc_diff = 0;
+	int objcode = cmd.opcode;
+	int search_flag = 0;
+	symbol_table *sym_tmp;
+	
+	if(cmd.format == 4)
+		xbpe |= 0x1;
+
+	if(cmd.use_X){
+		cmd.param1[strlen(cmd.param1)-1] = '\0';
+		xbpe |= 0x8;
+	}
+
+	switch(calc_type){
+		case SIMPLE:
+			objcode |= 0x3;
+			break;
+
+		case IMMEDIATE:
+			objcode |= 0x1;
+			search_flag = 1;
+			break;
+
+		case INDIRECT:
+			objcode |= 0x2;
+			search_flag = 1;
+			break;
+	}
+	
+	/**** format 4 ****/
+	if(cmd.format == 4){
+		if((disp = is_decimal(cmd.param1 + search_flag)) < 0){
+			sym_tmp = find_at_symbol(cmd.param1 + search_flag);
+			if(!sym_tmp){
+				error_in_assemble(9, cmd.line);
+				//fprintf(stderr,"Error : line %d Doesn't exist symbol.\n",(i+1)*5);
+				(*error)++;
+			}
+			else{
+				disp = sym_tmp->loc;
+			}
+		}
+	}
+
+	/**** format 3 ****/
+	else{
+		/**** Find at symbol table ****/
+		if((disp = is_decimal(cmd.param1 + search_flag)) < 0){
+			sym_tmp = find_at_symbol(cmd.param1 + search_flag);
+			if(!sym_tmp){
+				error_in_assemble(9, cmd.line);
+				(*error)++;
+			}
+			else{
+				loc_diff = sym_tmp->loc - pc;
+				/**** use PC register relative addressing ****/
+				if(loc_diff >= -2048 && loc_diff <= 2047){
+					xbpe |= 0x2;
+					disp = loc_diff;
+				}
+				/**** Out of PC register range ****/
+				else{
+					/**** If it doesn't using base register ****/
+					if(b < 0){
+						error_in_assemble(20, cmd.line);
+						(*error)++;
+					}
+					/**** use base register relative addressing ****/
+					else{
+						loc_diff = sym_tmp->loc - b;
+						if(loc_diff >= 0 && loc_diff <= 4095){
+							xbpe |= 0x4;
+							disp = loc_diff;
+						}
+						/**** out of base register range ****/
+						else{
+							error_in_assemble(20, cmd.line);
+							(*error)++;
+						}
+					}
+				}
+			}
+		}
+		/**** for managing minus displacement ****/
+		disp &= 0xFFF;
+	}
+	
+	/**** make object code ****/
+	objcode = objcode << 4;
+	objcode |= xbpe;
+	
+	if(cmd.format == 4)
+		objcode = objcode << 20;
+	
+	else
+		objcode = objcode << 12;
+	
+	objcode |= disp;
+	return objcode;
+}
 
 /**** make .lst file ****/
 char* make_lst(assemble_table *commands, int line, char *filename){

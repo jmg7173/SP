@@ -31,6 +31,12 @@ enum enum_directive{
 	RESW
 };
 
+enum addr_type{
+	SIMPLE = 0,
+	IMMEDIATE,
+	INDIRECT
+};
+
 typedef struct{
 	char symbol[MAX_INSTRUCTION];
 	char mnemonic[MAX_INSTRUCTION];
