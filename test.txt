@@ -1,0 +1,1 @@
+Check if commit is well doing.
