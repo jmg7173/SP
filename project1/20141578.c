@@ -2,11 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include "20141578.h"
+#include "addr.h"
 #include "assemble.h"
 #include "constant.h"
+#include "debug.h"
 #include "error.h"
+#include "loader.h"
 #include "memory.h"
 #include "opcode.h"
+#include "run.h"
 #include "shell_command.h"
 #include "string_process.h"
 #include "symbol.h"
@@ -64,6 +68,8 @@ int main(){
 			print_opcode();
 		else if(strcmp(command_copy, "symbol") == 0)
 			command_symbol();
+		else if(strcmp(command_copy, "run") == 0)
+			command_run();
 
 		// If there is no such command, check if command is belonged in whitespace-needed commands.
 		// Also there is no such command in that, print error message and save '1' at is_error.
@@ -119,6 +125,18 @@ int command_with_whitespace(char* str){
 
 	else if(strcmp(tmp, "assemble") == 0)
 		return command_assemble();
+
+	// Compare with linking loader command
+	else if(strcmp(tmp, "progaddr") == 0)
+		return set_Addr();
+
+	else if(strcmp(tmp, "loader") == 0)
+		return command_loader();
+
+	// Compare with debug command
+	else if(strcmp(tmp, "bp") == 0)
+		return command_bp();
+	
 	// If it can't find command that matches above, return 1
 	return 1;
 }
