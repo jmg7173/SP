@@ -53,6 +53,8 @@ int print_error(char* command, int status){
 		case 13:
 						fprintf(stderr, "Error : Can't make immediate file.\n");
 						break;
+		case 14:
+						fprintf(stderr, "Error : Can't load object files.\n");
 		default:
 						break;
 	}
@@ -145,6 +147,17 @@ void error_in_assemble(int status, int line){
 
 		case 20:
 			fprintf(stderr, "Error : line %d Invalid location. Out of format 3 displacement range.\n", line);
+			break;
+	}
+}
+
+void error_in_loader(int status, char* filename){
+	switch(status){
+		case 1:
+			fprintf(stderr, "Error : %s doesn't exist.\n", filename);
+			break;
+		case 2:
+			fprintf(stderr, "Error : There is no files.\n");
 			break;
 	}
 }
