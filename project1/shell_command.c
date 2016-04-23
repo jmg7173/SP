@@ -18,7 +18,11 @@ static const char *help_commands[HELP_COMMAND_NUM] = {
 	"opcodelist",
 	"assemble filename",
 	"type filename",
-	"symbol"
+	"symbol",
+	"progaddr",
+	"loader",
+	"bp",
+	"run"
 };
 
 // Print current directory's file and directories.
