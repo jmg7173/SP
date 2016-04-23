@@ -9,6 +9,8 @@ void add_at_tmp_symbol(const char*, int, int);
 void add_at_symbol_table(const char*, int, int);
 void delete_at_symbol_table();
 void delete_at_tmp_symbol(int);
+
+/*** extra symbol table functions ****/
 void add_at_estab(
 		const char *csect, 
 		const char *symbol,
@@ -17,5 +19,6 @@ void add_at_estab(
 );
 void print_estab();
 void init_estab();
+extsym_table* find_at_estab(const char *str);
 
 #endif

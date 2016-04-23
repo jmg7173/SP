@@ -151,13 +151,19 @@ void error_in_assemble(int status, int line){
 	}
 }
 
-void error_in_loader(int status, char* filename){
+void error_in_loader(int status, const char* str){
 	switch(status){
 		case 1:
-			fprintf(stderr, "Error : %s doesn't exist.\n", filename);
+			fprintf(stderr, "Error : %s doesn't exist.\n", str);
 			break;
 		case 2:
 			fprintf(stderr, "Error : There is no files.\n");
+			break;
+		case 3:
+			fprintf(stderr, "Error : %s duplicated external symbol.\n",str);
+			break;
+		case 4:
+			fprintf(stderr, "Error : %s doesn't exist at external symbol.\n",str);
 			break;
 	}
 }

@@ -228,3 +228,9 @@ void print_memory(int start, int end){
 void reset_memory(){
 	memset(memory,0,MAX_MEMORY);
 }
+
+void set_memory(int addr, int value){
+	memory[addr] = value;
+}
+
+int get_memory(int addr){return memory[addr];}

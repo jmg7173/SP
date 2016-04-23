@@ -211,3 +211,21 @@ void init_estab(){
 	}
 	estab = NULL;
 }
+
+extsym_table* find_at_estab(const char *str){
+	extsym_table *tmp = estab;
+	int find = 0;
+
+	while(tmp){
+		if(!strcmp(tmp->symbol,str)){
+			find = 1;
+			break;
+		}
+		tmp = tmp->next;
+	}
+
+	if(find){
+		return tmp;
+	}
+	return NULL;
+}
