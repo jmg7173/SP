@@ -60,4 +60,11 @@ typedef struct TABLE{
 	struct TABLE *next;
 }symbol_table;
 
+typedef struct ESTAB{
+	char csect[MAX_INSTRUCTION];
+	char symbol[MAX_INSTRUCTION];
+	int addr;
+	int length;
+	struct ESTAB *next;
+}extsym_table;
 #endif

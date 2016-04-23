@@ -7,6 +7,8 @@ static symbol_table *symbols = NULL;
 static symbol_table *tmp_table = NULL;
 static symbol_table *symbol_head;
 
+static extsym_table *estab = NULL;
+
 /**** Description : execute command symbol ****/
 void command_symbol(){
 	symbol_table *tmp = symbols;
@@ -138,4 +140,69 @@ void delete_at_tmp_symbol(int option){
 		free(tmp_table);
 		tmp_table = tmp;
 	}
+}
+
+void add_at_estab(
+		const char *csect, 
+		const char *symbol,
+		int addr,
+		int length
+){
+	extsym_table *new_node;
+	extsym_table *tmp = estab;
+	if(tmp == NULL){
+		new_node = (extsym_table*)malloc(sizeof(extsym_table));
+		strcpy(new_node->csect, csect);
+		strcpy(new_node->symbol, symbol);
+		new_node->addr = addr;
+		new_node->length = length;
+		new_node->next = NULL;
+		estab = new_node;
+	}
+	else{
+		new_node = (extsym_table*)malloc(sizeof(extsym_table));
+		while(tmp->next != NULL){
+			tmp = tmp->next;
+		}
+		strcpy(new_node->csect, csect);
+		strcpy(new_node->symbol, symbol);
+		new_node->addr = addr;
+		new_node->length = length;
+		new_node->next = NULL;
+		tmp->next = new_node;
+	}
+}
+
+void print_estab(){
+	extsym_table *tmp = estab;
+	printf("control\t\tsymbol\t\taddress\t\tlength\n");
+	printf("section\t\tname\n");
+	printf("---------------------------------------------------------\n");
+	while(tmp != NULL){
+		if(!strcmp(tmp->csect,tmp->symbol)){
+			printf("%s\t\t\t\t%04X\t\t%04X\n",
+					tmp->csect,
+					tmp->addr,
+					tmp->length
+			);
+		}
+		else{
+			printf("\t\t%s\t\t%04X\n",
+					tmp->symbol,
+					tmp->addr
+			);
+		}
+		tmp = tmp->next;
+	}
+}
+
+void init_estab(){
+	extsym_table *tmp;
+	tmp = estab;
+	while(tmp != NULL){
+		tmp = estab->next;
+		free(estab);
+		estab = tmp;
+	}
+	estab = NULL;
 }
