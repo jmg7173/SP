@@ -175,6 +175,8 @@ void add_at_estab(
 
 void print_estab(){
 	extsym_table *tmp = estab;
+	int total_length = 0;
+
 	printf("control\t\tsymbol\t\taddress\t\tlength\n");
 	printf("section\t\tname\n");
 	printf("---------------------------------------------------------\n");
@@ -185,6 +187,7 @@ void print_estab(){
 					tmp->addr,
 					tmp->length
 			);
+			total_length += tmp->length;
 		}
 		else{
 			printf("\t\t%s\t\t%04X\n",
@@ -194,6 +197,8 @@ void print_estab(){
 		}
 		tmp = tmp->next;
 	}
+	printf("---------------------------------------------------------\n");
+	printf("\t\t\t\ttotal length\t%04X\n",total_length);
 }
 
 void init_estab(){

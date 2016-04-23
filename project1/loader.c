@@ -77,15 +77,13 @@ int command_loader(){
 			}
 			str_line[str_length] = '\0';
 			
-			printf("%s\n",str_line);
-			
 			switch(str_line[0]){
 				case 'H':
 					diff = obj_record_H(str_line, csect, csaddr, &prog_length);
 					break;
 
 				case 'D':
-					obj_record_D(str_line, csect, csaddr, diff);
+					obj_record_D(str_line, csect, diff);
 					break;
 
 				case 'E':
@@ -99,6 +97,7 @@ int command_loader(){
 			if(flag) break;
 		}
 		csaddr += prog_length;
+		fseek(fp_arr[i],0,SEEK_SET);
 	}
 	print_estab();
 
@@ -116,7 +115,7 @@ int obj_record_H(char *str, char *csect, int csaddr, int *length){
 	return csaddr - start;
 }
 
-void obj_record_D(char *str, char *csect, int csaddr, int diff){
+void obj_record_D(char *str, char *csect, int diff){
 	int curr_ptr = 1;
 	int str_length = strlen(str);
 	int addr;
