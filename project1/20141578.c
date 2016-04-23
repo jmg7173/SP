@@ -7,6 +7,7 @@
 #include "constant.h"
 #include "debug.h"
 #include "error.h"
+#include "file.h"
 #include "loader.h"
 #include "memory.h"
 #include "opcode.h"
@@ -128,7 +129,7 @@ int command_with_whitespace(char* str){
 
 	// Compare with linking loader command
 	else if(strcmp(tmp, "progaddr") == 0)
-		return set_Addr();
+		return command_progaddr();
 
 	else if(strcmp(tmp, "loader") == 0)
 		return command_loader();

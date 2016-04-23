@@ -6,7 +6,7 @@
 static int progaddr = 0;
 
 int get_Addr(){return progaddr;}
-int set_Addr(){
+int command_progaddr(){
 	char *tmp;
 	int addr;
 
@@ -24,4 +24,7 @@ int set_Addr(){
 
 	progaddr = addr;
 	return 0;
+}
+void set_Addr(int addr){
+	progaddr = addr;
 }

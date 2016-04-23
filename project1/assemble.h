@@ -6,8 +6,6 @@
 
 
 /**** command function ****/
-FILE* open_file(int*, char*);
-int command_type();
 int command_assemble();
 
 /**** assemble function ****/
