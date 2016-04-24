@@ -55,6 +55,10 @@ int print_error(char* command, int status){
 						break;
 		case 14:
 						fprintf(stderr, "Error : Can't load object files.\n");
+						break;
+		case 15:
+						fprintf(stderr, "Error : duplicated break point address.\n");
+						break;
 		default:
 						break;
 	}

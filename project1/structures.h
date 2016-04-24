@@ -19,6 +19,13 @@ typedef struct _HASH_NODE{
 	struct _HASH_NODE *next;
 }hash_node;
 
+typedef struct{
+	int opcode;
+	char instr[MAX_INSTRUCTION];
+	int format1;
+	int format2;
+}opcode_table;
+
 /**** assemble.c ****/
 enum enum_directive{
 	END=0,
@@ -31,10 +38,16 @@ enum enum_directive{
 	RESW
 };
 
+
 enum addr_type{
 	SIMPLE = 0,
 	IMMEDIATE,
 	INDIRECT
+};
+
+enum calc_type{
+	STORE = 0,
+	LOAD = 1
 };
 
 typedef struct{
@@ -67,4 +80,10 @@ typedef struct ESTAB{
 	int length;
 	struct ESTAB *next;
 }extsym_table;
+
+typedef struct _BP_NODE{
+	int addr;
+	struct _BP_NODE *next;
+}node;
+
 #endif

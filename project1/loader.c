@@ -7,6 +7,7 @@
 #include "file.h"
 #include "loader.h"
 #include "memory.h"
+#include "run.h"
 #include "string_process.h"
 #include "structures.h"
 #include "symbol.h"
@@ -166,7 +167,8 @@ int command_loader(){
 	}
 	
 	print_estab();
-	
+	set_end_addr(csaddr-1);
+	init_reg();
 	return 0;
 }
 

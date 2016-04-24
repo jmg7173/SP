@@ -25,6 +25,7 @@ int main(){
 	int is_error; // It represents that input command is valid or invalid.
 	
 	make_hashtable(); // Make hashtable associated with opcodes. 
+	init_curr_bp();
 
 	while(1){ // Run until input command is "q" or "quit"
 		printf("sicsim> ");
@@ -91,6 +92,8 @@ void quit_program(){
 	delete_history_linked_list();
 	delete_hashtable();
 	delete_at_symbol_table();
+	init_bp(0);
+	init_estab();
 }
 
 // Process associated with command that contains whitespace 

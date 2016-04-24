@@ -13,6 +13,7 @@ hash_node *hash_table[MAX_HASH_BUCKET] = {0};
 
 // Seed for hash function
 static unsigned int seed = 23;
+static opcode_table opcode[64] = { {.opcode = 0, }};
 
 // Make hashtable
 void make_hashtable(){
@@ -44,6 +45,10 @@ hash_node* search_mnemonic(const char* key){
 	return NULL;
 }
 
+opcode_table search_as_opcode(const int value){
+	return opcode[value/4];
+}
+
 // Deallocate memories of hash table
 void delete_hashtable(){
 	int i;
@@ -57,8 +62,6 @@ void delete_hashtable(){
 		}
 	}
 }
-
-
 
 // Set mnemonic at hashtable
 void set_hashtable(char* key, int value, int format1, int format2){
@@ -86,6 +89,15 @@ void set_hashtable(char* key, int value, int format1, int format2){
 		new_node->format1 = format1;
 		new_node->format2 = format2;
 	}
+	set_opcodetable(key, value, format1, format2);
+}
+
+void set_opcodetable(char* instr, int value, int format1, int format2){
+	int i = value/4;
+	opcode[i].opcode = value;
+	opcode[i].format1 = format1;
+	opcode[i].format2 = format2;
+	strcpy(opcode[i].instr, instr);
 }
 
 // murmur2 hash function from http://en.wikipedia.org/wiki/MurmurHash

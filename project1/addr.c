@@ -1,6 +1,8 @@
 #include <string.h>
+
 #include "addr.h"
 #include "error.h"
+#include "run.h"
 #include "string_process.h"
 
 static int progaddr = 0;
@@ -23,6 +25,7 @@ int command_progaddr(){
 		return 6;
 
 	progaddr = addr;
+	set_start_addr(progaddr);
 	return 0;
 }
 void set_Addr(int addr){
