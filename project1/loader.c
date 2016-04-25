@@ -3,6 +3,7 @@
 
 #include "addr.h"
 #include "constant.h"
+#include "debug.h"
 #include "error.h"
 #include "file.h"
 #include "loader.h"
@@ -55,12 +56,6 @@ int command_loader(){
 	
 	if(error > 0){
 		memfree_loader(file_cnt - 1, filename_arr, fp_arr);
-		/*
-		for(i = 0; i < file_cnt - 1; i++){
-			fclose(fp_arr[i]);
-			free(filename_arr[i]);
-		}
-		free(filename_arr[i]);*/
 		return 14;
 	}
 
@@ -167,8 +162,10 @@ int command_loader(){
 	}
 	
 	print_estab();
+	set_start_addr(progaddr);
 	set_end_addr(csaddr-1);
 	init_reg();
+	init_curr_bp();
 	return 0;
 }
 

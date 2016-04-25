@@ -1,6 +1,7 @@
 #include <string.h>
 
 #include "addr.h"
+#include "debug.h"
 #include "error.h"
 #include "run.h"
 #include "string_process.h"
@@ -24,10 +25,11 @@ int command_progaddr(){
 	if((tmp = strtok(NULL, " ")))
 		return 6;
 
-	progaddr = addr;
-	set_start_addr(progaddr);
+	set_Addr(addr);
 	return 0;
 }
 void set_Addr(int addr){
 	progaddr = addr;
+	set_start_addr(progaddr);
+	init_curr_bp();
 }

@@ -26,6 +26,7 @@ int main(){
 	
 	make_hashtable(); // Make hashtable associated with opcodes. 
 	init_curr_bp();
+	init_reg();
 
 	while(1){ // Run until input command is "q" or "quit"
 		printf("sicsim> ");

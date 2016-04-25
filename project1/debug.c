@@ -6,7 +6,7 @@
 #include "string_process.h"
 
 static node *bp_head = NULL;
-static node *curr_bp;
+static node *curr_bp = NULL;
 
 int command_bp(){
 	char *tmp;
@@ -25,7 +25,6 @@ int command_bp(){
 			if(error)
 				return 15;
 			printf("\t[ok] create breakpoint %04X\n",addr);
-			init_curr_bp();
 		}
 	}
 
@@ -109,15 +108,46 @@ void init_bp(int option){
 		printf("\t[ok] clear all breakpoints\n");
 }
 
-int get_next_bp(){
+int get_next_bp(int curr){
 	int addr = -1;
-	if(curr_bp != NULL){
-		addr = curr_bp->addr;
-		curr_bp = curr_bp->next;
+	node *prev = bp_head;
+	node *tmp;
+
+	while(prev != NULL && prev->next != NULL){
+		/**** curr <= prev_addr ****/
+		if(prev->addr >= curr){
+			if(prev->addr == curr && curr_bp != NULL && prev == curr_bp)
+				tmp = prev->next;
+			else{
+				curr_bp = prev;
+				return prev->addr;
+			}
+		}
+		/**** prev < curr ****/
+		else
+			tmp = prev->next;
+		
+		/**** prev < curr <= tmp ****/
+		if(tmp->addr >= curr){
+			if(tmp->addr == curr && curr_bp != NULL && tmp == curr_bp)
+				prev = prev->next;
+			else{
+				curr_bp = tmp;
+				return tmp->addr;
+			}
+		}
+
+		/**** prev < tmp < curr ****/
+		else
+			prev = prev->next;
+	}
+	if(prev != NULL && prev->addr >= curr && prev != curr_bp){
+		curr_bp = prev;
+		return prev->addr;
 	}
 	return addr;
 }
 
 void init_curr_bp(){
-	curr_bp = bp_head;
+	curr_bp = NULL;
 }
