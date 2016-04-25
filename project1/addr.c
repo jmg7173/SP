@@ -8,7 +8,10 @@
 
 static int progaddr = 0;
 
+/**** get progaddr ****/
 int get_Addr(){return progaddr;}
+
+/**** set progaddr ****/
 int command_progaddr(){
 	char *tmp;
 	int addr;
@@ -28,6 +31,8 @@ int command_progaddr(){
 	set_Addr(addr);
 	return 0;
 }
+
+/**** set addr and init curr_bp and set start address of run ****/
 void set_Addr(int addr){
 	progaddr = addr;
 	set_start_addr(progaddr);

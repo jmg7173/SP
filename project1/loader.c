@@ -13,6 +13,7 @@
 #include "structures.h"
 #include "symbol.h"
 
+/**** linking loader ****/
 int command_loader(){
 	FILE **fp_arr;
 	
@@ -33,7 +34,7 @@ int command_loader(){
 	int *modif;
 
 	init_estab();
-	/**** File open complete ****/
+	/**** File open ****/
 	while((tmp = strtok(NULL, " ")) != NULL){
 		file_cnt++;
 		if(file_cnt == 1){
@@ -54,11 +55,13 @@ int command_loader(){
 		}
 	}
 	
+	/**** if there doesn't exist file, it is error ****/
 	if(error > 0){
 		memfree_loader(file_cnt - 1, filename_arr, fp_arr);
 		return 14;
 	}
 
+	/**** if there is no file, it is error ****/
 	if(file_cnt == 0){
 		error_in_loader(2, NULL);
 		return 14;
@@ -80,6 +83,7 @@ int command_loader(){
 			}
 			str_line[str_length] = '\0';
 			
+			/**** process about H, D, E records ****/
 			switch(str_line[0]){
 				case 'H':
 					diff = obj_record_H(str_line, csect, csaddr, &prog_length, &error);
@@ -97,19 +101,26 @@ int command_loader(){
 					continue;
 			}
 
+			/**** If there is error, memory free ****/
 			if(error){	
 				init_estab();
 				memfree_loader(file_cnt, filename_arr, fp_arr);
 				return 14;
 			}
 			
+			/**** When reach at E record, end pass 1 ****/
 			if(flag) break;
 		}
+		/**** set control section address ****/
 		csaddr += prog_length;
+
+		/**** set file pointer as start of file ****/
 		fseek(fp_arr[i],0,SEEK_SET);
 	}
 
+	/**** init csaddr as progaddr ****/
 	csaddr = progaddr;
+
 	/**** Pass 2 ****/
 	for(i = 0; i<file_cnt; i++){
 		flag = 0;
@@ -126,11 +137,13 @@ int command_loader(){
 			}
 			str_line[str_length] = '\0';
 
+			/**** process H, R, T, M, E records ****/
 			switch(str_line[0]){
 				case 'H':{
 									 extsym_table *tmp;
 									 int start;
-									 
+
+									 /**** save control section name and start address at modification arrays ****/
 									 sscanf(str_line,"H%06s%06X",csect,&start);
 									 delete_trailing_whitespace(csect);
 									 diff = csaddr - start;
@@ -149,27 +162,47 @@ int command_loader(){
 				case 'M':
 					obj_record_M(str_line, modif, diff);
 					break;
+				case 'E':
+					flag = 1;
+					break;
 			}
 			
+			/**** if there is error, free memory ****/
 			if(error){
 				memfree_loader(file_cnt, filename_arr, fp_arr);
+				init_estab();
 				free(modif);
 				return 14;
 			}
+
+			/**** If reach at E record, end a file ****/
+			if(flag)
+				break;
 		}
 		free(modif);
 		csaddr += prog_length;
 	}
 	
+	/**** print external symbol table ****/
 	print_estab();
+	
+	/**** set start and end address of execution ****/
 	set_start_addr(progaddr);
 	set_end_addr(csaddr-1);
+
+	/**** init register ****/
 	init_reg();
+
+	/**** init current break point ****/
 	init_curr_bp();
+	
+	/**** free memory ****/
+	memfree_loader(file_cnt, filename_arr, fp_arr);
+	init_estab();
 	return 0;
 }
 
-// return length;
+/**** record H(header) ****/
 int obj_record_H(char *str, char *csect, int csaddr, int *length, int *error){
 	int start;
 	extsym_table *tmp;
@@ -187,6 +220,7 @@ int obj_record_H(char *str, char *csect, int csaddr, int *length, int *error){
 	return csaddr - start;
 }
 
+/**** record D(external definition) ****/
 void obj_record_D(char *str, char *csect, int diff, int *error){
 	int curr_ptr = 1;
 	int str_length = strlen(str);
@@ -205,12 +239,14 @@ void obj_record_D(char *str, char *csect, int diff, int *error){
 			error = 0;
 		}
 		
+		/**** save modificated address ****/
 		addr += diff;
 		add_at_estab(csect, symbol, addr, -1);
 		curr_ptr += 12;
 	}
 }
 
+/**** record R(external reference) ****/
 void obj_record_R(char *str, int* modif, int* error){
 	int curr_ptr = 1;
 	int str_length = strlen(str);
@@ -218,6 +254,7 @@ void obj_record_R(char *str, int* modif, int* error){
 	char symbol[MAX_INSTRUCTION];
 	extsym_table *tmp;
 
+	/**** save at modification array ****/
 	while(curr_ptr < str_length){
 		sscanf(str+curr_ptr, "%02X%06s",&index, symbol);
 		delete_trailing_whitespace(symbol);
@@ -236,6 +273,7 @@ void obj_record_R(char *str, int* modif, int* error){
 	}
 }
 
+/**** record T(text) ****/
 void obj_record_T(char *str, int diff){
 	int curr_ptr = 1;
 	int code_length;
@@ -248,6 +286,8 @@ void obj_record_T(char *str, int diff){
 	code_length *= 2;
 	curr_ptr += 8;
 	curr_addr = start_addr + diff;
+
+	/**** save at memory ****/
 	while(curr_ptr < code_length + 9){
 		sscanf(str+curr_ptr,"%02X",&value);
 		set_memory(curr_addr, value);
@@ -256,6 +296,7 @@ void obj_record_T(char *str, int diff){
 	}
 }
 
+/**** record M(modification) ****/
 void obj_record_M(char *str, int *modif, int diff){
 	int addr;
 	int size;
@@ -304,7 +345,7 @@ void obj_record_M(char *str, int *modif, int diff){
 	value = value & (~mask);
 	value += tmp;
 
-	/**** edit at memory ****/
+	/**** edit modified data at memory ****/
 	tmp = addr;
 	if(size % 2)
 		get = size/2 + 1;
@@ -317,6 +358,7 @@ void obj_record_M(char *str, int *modif, int diff){
 	}
 }
 
+/**** free memory ****/
 void memfree_loader(int tot, char** filename_arr, FILE **fp_arr){
 	int i;
 

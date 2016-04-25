@@ -22,6 +22,7 @@ struct reg{
 static struct reg reg_set;
 static int bp;
 
+/**** execute program ****/
 int command_run(){
 	int data;
 	int ni;
@@ -35,6 +36,7 @@ int command_run(){
 	if(bp < reg_set.PC) 
 		bp = -1;
 
+	/**** execute until meet breakpoint or end of program or end of memory ****/
 	while(reg_set.PC < end_addr && reg_set.PC <=0xFFFFF){
 		flag_e = 0;
 		xbpe = 0;
@@ -91,14 +93,17 @@ int command_run(){
 	return 0;
 }
 
-void set_end_addr(int addr){
-	end_addr = addr;
-}
-
+/**** set execute starting address ****/
 void set_start_addr(int addr){
 	curr_addr = addr;
 }
 
+/**** set execute ending address ****/
+void set_end_addr(int addr){
+	end_addr = addr;
+}
+
+/**** init register value ****/
 void init_reg(){
 	reg_set.A = 0;
 	reg_set.X = -1 & 0xFFFFFF;
@@ -110,6 +115,7 @@ void init_reg(){
 	reg_set.SW = 0;
 }
 
+/**** print register value ****/
 void print_register(){
 	printf("\t\tA : %06X X  : %06X\n",reg_set.A, reg_set.X);
 	printf("\t\tL : %06X PC : %06X\n",reg_set.L, reg_set.PC);
@@ -117,87 +123,49 @@ void print_register(){
 	printf("\t\tT : %06X\n",reg_set.T);
 }
 
+/**** process at immediate ****/
 int immediate(int xbpe, int data){
 	int value;	
+
+	/**** if data is negative number at 12bit, set it really negative ****/
 	if(!(xbpe & 0x01) && (data & 0x800)){
 		data |= 0xFFFFF000;
 	}
+
+	/**** not use anything ****/
 	if(xbpe == 0)
 		value = data;
+	/**** e bit ****/
 	else if(xbpe &0x01)
 		value = data;
-	else if(xbpe & 0x02) // PC Relative
+	/**** use pc relative ****/
+	else if(xbpe & 0x02)
 		value = (data + reg_set.PC);
-	else if(xbpe & 0x04) // Base Relative
+	/**** use base relative ****/
+	else if(xbpe & 0x04)
 		value = (data + reg_set.B);
 	return value;
 }
 
+/****process at indirect ****/
 int indirect(int xbpe, int data, int byte, int option, int save){
 	int value;
 	int addr;
+	/**** get address ****/
 	if(xbpe & 0x01)
 		addr = simple(xbpe, data, 5, LOAD, 0);
 	else 
 		addr = simple(xbpe, data, byte, LOAD, 0);
 
+	/**** at 1 byte processing ****/
 	if(byte == 1){
-		if(option == LOAD){
-			value = get_memory(addr);
-			return value;
-		}
-		else{
-			set_memory(addr, save);
-			return 0;
-		}
-	}
-	
-	if(option == LOAD){
-		value  = get_memory(addr);
-		value  = value << 8;
-		value += get_memory(addr + 1);
-		value  = value << 8;
-		value += get_memory(addr + 2);
-		value  = value << 8;
-	}
-	
-	else{
-		set_memory(addr, ((save >> 16) & 0xFF));
-		set_memory(addr+1, ((save >> 8) & 0xFF));
-		set_memory(addr+2, (save & 0xFF));
-		return 0;
-	}
-
-	return value;
-}
-
-int simple(int xbpe, int data, int byte, int option, int save){
-	int value = 0;
-	int addr = data;
-	if(xbpe & 0x01) byte = 5;
-
-	if(byte == 3){
-		if(data & 0x800){
-			data |= 0xFFFFF000;
-		}
-	}
-	
-	if(xbpe & 0x08){
-		addr = data + reg_set.X;
-	}
-	if(xbpe & 0x02){
-		addr += reg_set.PC;
-	}
-	else if(xbpe & 0x04){
-		addr += reg_set.B;
-	}
-	
-	if(byte == 1){
+		/**** load from memory ****/
 		if(option == LOAD){
 			if(addr <= 0xFFFFF)
 				value = get_memory(addr);
 			return value;
 		}
+		/**** save at memory ****/
 		else{
 			if(addr <= 0xFFFFF)
 				set_memory(addr, save);
@@ -205,6 +173,79 @@ int simple(int xbpe, int data, int byte, int option, int save){
 		}
 	}
 	
+	/**** load from memory ****/
+	if(option == LOAD){
+		if(addr <= 0xFFFFF){
+			value  = get_memory(addr);
+		}
+		if(addr + 1 <= 0xFFFFF){
+			value  = value << 8;
+			value += get_memory(addr + 1);
+		}
+		if(addr + 2 <= 0xFFFFF){
+			value  = value << 8;
+			value += get_memory(addr + 2);
+		}	
+	}
+
+	/**** save at memory ****/
+	else{
+		if(addr <= 0xFFFFF)
+			set_memory(addr, ((save >> 16) & 0xFF));
+		if(addr + 1 <= 0xFFFFF)
+			set_memory(addr+1, ((save >> 8) & 0xFF));
+		if(addr + 2 <= 0xFFFFF)
+			set_memory(addr+2, (save & 0xFF));
+		return 0;
+	}
+
+	return value;
+}
+
+/**** process at simple ****/
+int simple(int xbpe, int data, int byte, int option, int save){
+	int value = 0;
+	int addr = data;
+	
+	if(xbpe & 0x01) byte = 5;
+
+	/**** if 12bit data is negative, set it as really negative ****/
+	if(byte == 3){
+		if(data & 0x800){
+			data |= 0xFFFFF000;
+		}
+	}
+	
+	/**** use X register ****/
+	if(xbpe & 0x08){
+		addr = data + reg_set.X;
+	}
+	/**** use pc relative ****/
+	if(xbpe & 0x02){
+		addr += reg_set.PC;
+	}
+	/**** user base relative ****/
+	else if(xbpe & 0x04){
+		addr += reg_set.B;
+	}
+	
+	/**** at 1 byte ****/
+	if(byte == 1){
+		/**** load from memory ****/
+		if(option == LOAD){
+			if(addr <= 0xFFFFF)
+				value = get_memory(addr);
+			return value;
+		}
+		/**** save at memory ****/
+		else{
+			if(addr <= 0xFFFFF)
+				set_memory(addr, save);
+			return 0;
+		}
+	}
+	
+	/**** load from memory ****/
 	if(option == LOAD){
 		if(addr <= 0xFFFFF){
 			value  = get_memory(addr);
@@ -219,6 +260,7 @@ int simple(int xbpe, int data, int byte, int option, int save){
 		}
 	}
 	
+	/**** save at memory ****/
 	else{
 		if(addr <= 0xFFFFF)
 			set_memory(addr, ((save >> 16) & 0xFF));
@@ -231,6 +273,7 @@ int simple(int xbpe, int data, int byte, int option, int save){
 	return value;
 }
 
+/**** execute opcode ****/
 void execute_opcode(int opcode, int ni, int xbpe, int data){
 	switch(opcode){
 		case 0x00:

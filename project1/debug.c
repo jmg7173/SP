@@ -8,6 +8,7 @@
 static node *bp_head = NULL;
 static node *curr_bp = NULL;
 
+/**** set break point ****/
 int command_bp(){
 	char *tmp;
 	int addr;
@@ -21,6 +22,8 @@ int command_bp(){
 				return 3;
 			else if(comma_check(tmp))
 				return 9;
+
+			/**** add at linked list of breakpoint ****/
 			add_at_bp(addr, &error);
 			if(error)
 				return 15;
@@ -28,11 +31,13 @@ int command_bp(){
 		}
 	}
 
+	/**** bp printing command ****/
 	else
 		print_bp();
 	return 0;
 }
 
+/**** print every breakpoint ****/
 void print_bp(){
 	node *tmp = bp_head;
 	printf("\tbreakpoint\n");
@@ -43,6 +48,7 @@ void print_bp(){
 	}
 }
 
+/**** add at bp linked list ****/
 void add_at_bp(int addr, int *error){
 	node *tmp;
 	node *new_node;
@@ -55,6 +61,7 @@ void add_at_bp(int addr, int *error){
 	else{
 		node *prev = bp_head;
 		
+		/**** insert linked list as increasing order ****/
 		while(prev->next != NULL){
 			if(prev->addr < addr){
 				tmp = prev->next;
@@ -97,6 +104,7 @@ void add_at_bp(int addr, int *error){
 	}
 }
 
+/**** memory free break point ****/
 void init_bp(int option){
 	node *tmp = bp_head;
 	while(tmp != NULL){
@@ -108,6 +116,7 @@ void init_bp(int option){
 		printf("\t[ok] clear all breakpoints\n");
 }
 
+/**** set next break point ****/
 int get_next_bp(int curr){
 	int addr = -1;
 	node *prev = bp_head;
@@ -148,6 +157,7 @@ int get_next_bp(int curr){
 	return addr;
 }
 
+/**** init current breakpoint ****/
 void init_curr_bp(){
 	curr_bp = NULL;
 }
