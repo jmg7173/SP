@@ -1,0 +1,466 @@
+content :  w3schools.com , link :  http://www.w3schools.com
+content :  None , link :  http://www.w3schools.com/default.asp
+content :  HTML , link :  http://www.w3schools.com/html/default.asp
+content :  CSS , link :  http://www.w3schools.com/css/default.asp
+content :  JAVASCRIPT , link :  http://www.w3schools.com/js/default.asp
+content :  SQL , link :  http://www.w3schools.com/sql/default.asp
+content :  PHP , link :  http://www.w3schools.com/php/default.asp
+content :  BOOTSTRAP , link :  http://www.w3schools.com/bootstrap/default.asp
+content :  JQUERY , link :  http://www.w3schools.com/jquery/default.asp
+content :  ANGULAR , link :  http://www.w3schools.com/angular/default.asp
+content :  XML , link :  http://www.w3schools.com/xml/default.asp
+content :  FORUM , link :  http://www.w3schools.com/forum/default.asp
+content :  HTML HOME , link :  http://www.w3schools.com/default.asp
+content :  HTML Introduction , link :  http://www.w3schools.com/html_intro.asp
+content :  HTML Editors , link :  http://www.w3schools.com/html_editors.asp
+content :  HTML Basic , link :  http://www.w3schools.com/html_basic.asp
+content :  HTML Elements , link :  http://www.w3schools.com/html_elements.asp
+content :  HTML Attributes , link :  http://www.w3schools.com/html_attributes.asp
+content :  HTML Headings , link :  http://www.w3schools.com/html_headings.asp
+content :  HTML Paragraphs , link :  http://www.w3schools.com/html_paragraphs.asp
+content :  HTML Styles , link :  http://www.w3schools.com/html_styles.asp
+content :  HTML Formatting , link :  http://www.w3schools.com/html_formatting.asp
+content :  HTML Quotations , link :  http://www.w3schools.com/html_quotation_elements.asp
+content :  HTML Computercode , link :  http://www.w3schools.com/html_computercode_elements.asp
+content :  HTML Comments , link :  http://www.w3schools.com/html_comments.asp
+content :  HTML Colors , link :  http://www.w3schools.com/html_colors.asp
+content :  HTML CSS , link :  http://www.w3schools.com/html_css.asp
+content :  HTML Links , link :  http://www.w3schools.com/html_links.asp
+content :  HTML Images , link :  http://www.w3schools.com/html_images.asp
+content :  HTML Tables , link :  http://www.w3schools.com/html_tables.asp
+content :  HTML Lists , link :  http://www.w3schools.com/html_lists.asp
+content :  HTML Blocks , link :  http://www.w3schools.com/html_blocks.asp
+content :  HTML Classes , link :  http://www.w3schools.com/html_classes.asp
+content :  HTML Layout , link :  http://www.w3schools.com/html_layout.asp
+content :  HTML Responsive , link :  http://www.w3schools.com/html_responsive.asp
+content :  HTML Iframes , link :  http://www.w3schools.com/html_iframe.asp
+content :  HTML JavaScript , link :  http://www.w3schools.com/html_scripts.asp
+content :  HTML Head , link :  http://www.w3schools.com/html_head.asp
+content :  HTML Entities , link :  http://www.w3schools.com/html_entities.asp
+content :  HTML Symbols , link :  http://www.w3schools.com/html_symbols.asp
+content :  HTML Charset , link :  http://www.w3schools.com/html_charset.asp
+content :  HTML URL Encode , link :  http://www.w3schools.com/html_urlencode.asp
+content :  HTML XHTML , link :  http://www.w3schools.com/html_xhtml.asp
+content :  HTML Forms , link :  http://www.w3schools.com/html_forms.asp
+content :  HTML Form Elements , link :  http://www.w3schools.com/html_form_elements.asp
+content :  HTML Input Types , link :  http://www.w3schools.com/html_form_input_types.asp
+content :  HTML Input Attributes , link :  http://www.w3schools.com/html_form_attributes.asp
+content :  HTML5 Intro , link :  http://www.w3schools.com/html5_intro.asp
+content :  HTML5 Support , link :  http://www.w3schools.com/html5_browsers.asp
+content :  HTML5 Elements , link :  http://www.w3schools.com/html5_new_elements.asp
+content :  HTML5 Semantics , link :  http://www.w3schools.com/html5_semantic_elements.asp
+content :  HTML5 Migration , link :  http://www.w3schools.com/html5_migration.asp
+content :  HTML5 Style Guide , link :  http://www.w3schools.com/html5_syntax.asp
+content :  HTML Canvas , link :  http://www.w3schools.com/html5_canvas.asp
+content :  HTML SVG , link :  http://www.w3schools.com/html5_svg.asp
+content :  HTML Media , link :  http://www.w3schools.com/html_media.asp
+content :  HTML Video , link :  http://www.w3schools.com/html5_video.asp
+content :  HTML Audio , link :  http://www.w3schools.com/html5_audio.asp
+content :  HTML Plug-ins , link :  http://www.w3schools.com/html_object.asp
+content :  HTML YouTube , link :  http://www.w3schools.com/html_youtube.asp
+content :  HTML Geolocation , link :  http://www.w3schools.com/html5_geolocation.asp
+content :  HTML Drag/Drop , link :  http://www.w3schools.com/html5_draganddrop.asp
+content :  HTML Local Storage , link :  http://www.w3schools.com/html5_webstorage.asp
+content :  HTML App Cache , link :  http://www.w3schools.com/html5_app_cache.asp
+content :  HTML Web Workers , link :  http://www.w3schools.com/html5_webworkers.asp
+content :  HTML SSE , link :  http://www.w3schools.com/html5_serversentevents.asp
+content :  HTML Examples , link :  http://www.w3schools.com/html_examples.asp
+content :  HTML Quiz , link :  http://www.w3schools.com/html_quiz.asp
+content :  HTML5 Quiz , link :  http://www.w3schools.com/html5_quiz.asp
+content :  HTML Certificate , link :  http://www.w3schools.com/html_exam.asp
+content :  HTML5 Certificate , link :  http://www.w3schools.com/html5_exam.asp
+content :  HTML Summary , link :  http://www.w3schools.com/html_summary.asp
+content :  HTML Tag List , link :  http://www.w3schools.com/tags/default.asp
+content :  HTML Attributes , link :  http://www.w3schools.com/tags/ref_standardattributes.asp
+content :  HTML Events , link :  http://www.w3schools.com/tags/ref_eventattributes.asp
+content :  HTML Canvas , link :  http://www.w3schools.com/tags/ref_canvas.asp
+content :  HTML Audio/Video , link :  http://www.w3schools.com/tags/ref_av_dom.asp
+content :  HTML Doctypes , link :  http://www.w3schools.com/tags/ref_html_dtd.asp
+content :  HTML Colors , link :  http://www.w3schools.com/colors/default.asp
+content :  HTML Character Sets , link :  http://www.w3schools.com/charsets/default.asp
+content :  HTML URL Encode , link :  http://www.w3schools.com/tags/ref_urlencode.asp
+content :  HTML Lang Codes , link :  http://www.w3schools.com/tags/ref_language_codes.asp
+content :  HTTP Messages , link :  http://www.w3schools.com/tags/ref_httpmessages.asp
+content :  HTTP Methods , link :  http://www.w3schools.com/tags/ref_httpmethods.asp
+content :  PX to EM Converter , link :  http://www.w3schools.com/tags/ref_pxtoemconversion.asp
+content :  Keyboard Shortcuts , link :  http://www.w3schools.com/tags/ref_keyboardshortcuts.asp
+content :  « Previous , link :  http://www.w3schools.com/html5_serversentevents.asp
+content :  Next Chapter » , link :  http://www.w3schools.com/html_quiz.asp
+content :  HTML document , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_basic_document
+content :  HTML headings , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_basic_headings
+content :  HTML paragraphs , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_basic_paragraphs
+content :  HTML links , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_basic_link
+content :  HTML images , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_basic_img
+content :  Examples explained , link :  http://www.w3schools.com/html_basic.asp
+content :  The title attribute , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_attributes_title
+content :  The href attribute , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_attributes_link
+content :  The width and height attributes , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_attributes_img
+content :  The alt attribute , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_attributes_alt
+content :  Attribute without quotes , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_attributes_noquotes
+content :  Attribute without quotes does not work , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_attributes_error
+content :  Examples explained , link :  http://www.w3schools.com/html_attributes.asp
+content :  HTML headings , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_headings
+content :  HTML horizontal rules , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_headings_hr
+content :  HTML head , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_headings_head
+content :  Examples explained , link :  http://www.w3schools.com/html_headings.asp
+content :  HTML paragraphs , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_paragraphs1
+content :  More HTML paragraphs , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_paragraphs2
+content :  The use of line breaks in HTML , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_paragraphs
+content :  Poem problems (some problems with HTML formatting) , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_poem
+content :  How to control the line breaks and spaces with the <pre> tag , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_pre
+content :  Examples explained , link :  http://www.w3schools.com/html_paragraphs.asp
+content :  HTML styles , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_styles_intro
+content :  HTML background color , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_styles_background-color
+content :  HTML text color , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_styles_color
+content :  HTML text font , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_styles_font-family
+content :  HTML text size , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_styles_font-size
+content :  HTML text alignment , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_styles_text-align
+content :  Examples explained , link :  http://www.w3schools.com/html_styles.asp
+content :  Bold formatting using the <b> element , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_formatting_b
+content :  Strong formatting using the <strong> element , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_formatting_strong
+content :  Italic formatting using the <i> element , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_formatting_i
+content :  Emphasized formatting using the <em> element , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_formatting_em
+content :  Small formatting using the <small> element , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_formatting_small
+content :  Marked formatting using the <mark> element , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_formatting_mark
+content :  Marked deleted using the <del> element , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_formatting_del
+content :  Marked inserted using the <ins> element , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_formatting_ins
+content :  Marked deleted and inserted using <del> and <ins> , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_formatting_del_ins
+content :  Subscript formatting using the <sub> element , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_formatting_sub
+content :  Superscript formatting using the <sup> element , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_formatting_sup
+content :  Examples explained , link :  http://www.w3schools.com/html_formatting.asp
+content :  Formatting short quotations with the <q> element. , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_formatting_q
+content :  Formatting quoted sections with the <blockquote> element. , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_formatting_blockquote
+content :  Formatting document author/owner information with the <address> element , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_formatting_address
+content :  Formatting abbreviations and acronyms the <abbr> element , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_formatting_abbr
+content :  Formatting work title with the <cite> element , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_formatting_cite
+content :  Formatting text direction with the <bdo> element , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_formatting_bdo
+content :  Examples explained , link :  http://www.w3schools.com/html_quotation_elements.asp
+content :  Keyboard input formatting using the <kbd> element , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_formatting_kbd
+content :  Computer output formatting using the <samp> element , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_formatting_samp
+content :  Programming code formatting using the <code> element , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_formatting_code
+content :  Programming code formatting preserving whitespace and line-breaks , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_formatting_codepre
+content :  Variable formatting using the <var> element , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_formatting_var
+content :  Examples explained , link :  http://www.w3schools.com/html_computercode_elements.asp
+content :  Hidden comments , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_comment
+content :  Conditional comments , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_ie_conditional
+content :  Comments for debugging , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_comment_out
+content :  Examples explained , link :  http://www.w3schools.com/html_comments.asp
+content :  HTML with inline CSS , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_css_inline
+content :  HTML with internal CSS , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_css_internal
+content :  HTML with external CSS , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_css_external
+content :  HTML with CSS fonts , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_css_fonts
+content :  HTML with CSS using the id attribute , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_css_id
+content :  HTML with CSS using the class attribute , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_css_class
+content :  HTML and CSS borders , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_css_borders
+content :  HTML and CSS padding , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_css_padding
+content :  HTML and CSS margin , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_css_margin
+content :  HTML and CSS full demo , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_css_full
+content :  Examples explained , link :  http://www.w3schools.com/html_css.asp
+content :  Linking, using an absolute URL , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_links_w3schools
+content :  Linking, using a relative URL , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_links
+content :  Changing the color of links , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_links_colors
+content :  Removing the underline from links , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_links_noline
+content :  Changing the target of a link , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_links_target
+content :  An image as a link , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_links_image
+content :  Creating a bookmark link , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_links_bookmark
+content :  A link that breaks out of a frame , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_links_target_top
+content :  A mailto link , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_links_mailto
+content :  A mailto link with subject , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_links_mailto_subject
+content :  Examples explained , link :  http://www.w3schools.com/html_links.asp
+content :  The Mountain , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_images_mountain
+content :  An image height and width using attributes , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_images_attributes
+content :  An image height and width using CSS , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_images_size
+content :  An image height and width using both , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_images_style
+content :  An image in another folder , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_images_folder
+content :  An image with a broken link , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_images_wrong
+content :  An image on another server , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_images_w3schools
+content :  Using an image as a link , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_images_link
+content :  A moving image , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_images_hackman
+content :  An image map with clickable regions , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_images_map
+content :  A floating image , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_images_float
+content :  Examples explained , link :  http://www.w3schools.com/html_images.asp
+content :  Basic HTML tables , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_table_basic
+content :  A table with borders , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_table_border
+content :  A table with collapsed borders , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_table_collapse
+content :  A table with cell padding , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_table_cellpadding
+content :  A table with headings , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_table_headings
+content :  A table with left-aligned headings , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_table_headings_left
+content :  Horizontal/Vertical table headings , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_table_headers
+content :  A table with a caption , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_tables2
+content :  Table cells that span more than one column , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_table_colspan
+content :  Table cells that span more than one row , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_table_rowspan
+content :  A table with cell spacing , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_table_cellspacing
+content :  A table with HTML tags inside , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_table_elements
+content :  Tables with different style using id I , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_table_id1
+content :  Tables with different style using id II , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_table_id2
+content :  Tables with different style using class I , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_table_class1
+content :  Tables with different style using class II , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_table_class2
+content :  Examples explained , link :  http://www.w3schools.com/html_tables.asp
+content :  An unordered list (default) , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_lists_unordered
+content :  An unordered list with disc bullets , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_lists_unordered_disc
+content :  An unordered list with circle bullets , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_lists_unordered_circle
+content :  An unordered list with square bullets , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_lists_unordered_square
+content :  An unordered list without bullets , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_lists_unordered_none
+content :  An ordered list (default) , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_lists_ordered
+content :  An ordered list with numbers , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_lists_ordered_numbers
+content :  An ordered list with letters , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_lists_ordered_ucase
+content :  An ordered list with lowercase letters , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_lists_ordered_lcase
+content :  An ordered list with roman numbers , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_lists_ordered_roman_ucase
+content :  An ordered list with lowercase roman numbers , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_lists_ordered_roman_lcase
+content :  A description list , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_lists_description
+content :  A nested list I , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_lists_nested
+content :  A nested list II , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_lists_nested2
+content :  A horizontal list , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_lists_horizontal
+content :  A horizontal list menu , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_lists_menu
+content :  Examples explained , link :  http://www.w3schools.com/html_lists.asp
+content :  Styling <div> elements , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_div_capitals
+content :  Styling <span> elements , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_span_red
+content :  Examples explained , link :  http://www.w3schools.com/html_blocks.asp
+content :  Classing <div> elements I , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_classes_london
+content :  Classing <div> elements II , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_classes_capitals
+content :  Classing <span> elements , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_classes_span
+content :  Examples explained , link :  http://www.w3schools.com/html_classes.asp
+content :  Layout using <div> elements , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_layout_divs
+content :  Layout using semantic elements , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_layout_semantic
+content :  Layout using <table> elements , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_layout_tables
+content :  Examples explained , link :  http://www.w3schools.com/html_layout.asp
+content :  Inline frame (a frame inside an HTML page) , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_iframe
+content :  Examples explained , link :  http://www.w3schools.com/html_iframe.asp
+content :  A valid HTML document with no <html> <body, and <head> , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_head_none
+content :  A valid HTML document with no <head> element , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_head_no_head
+content :  The <title> element defines the document title , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_head_title
+content :  The <style> element contains style information , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_head_style
+content :  The <link> element defines a relationship to an external resource , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_head_link
+content :  The <meta> element defines special meta information , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_head_meta
+content :  The <script> element defines client-side JavaScripts , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_head_script
+content :  The <base> element defines the base URL for all URLs , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_head_base
+content :  Examples explained , link :  http://www.w3schools.com/html_head.asp
+content :  Insert a script , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_script
+content :  Use of the <noscript> tag , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_noscript
+content :  Examples explained , link :  http://www.w3schools.com/html_scripts.asp
+content :  Form with text input , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_form_text
+content :  Form with radio button input , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_form_radio
+content :  Form with text fields and a submit button , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_form_submit
+content :  Form with a text fields without a name attribute , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_form_submit_id
+content :  Grouping Form Data , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_form_legend
+content :  Send e-mail from a form , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_form_mail
+content :  Examples explained , link :  http://www.w3schools.com/html_forms.asp
+content :  A simple drop-down list , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_elem_select
+content :  A drop-down list with a pre-selected value , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_elem_select_pre
+content :  A textarea (a multi-line text input field) , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_elem_textarea
+content :  An input button , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_elem_button
+content :  Using the <datalist> Element , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_elem_datalist
+content :  Using the <keygen> Element , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_elem_keygen
+content :  Using the <output> Element , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_elem_output
+content :  Examples explained , link :  http://www.w3schools.com/html_form_elements.asp
+content :  Input type text , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_input_text
+content :  Input type password , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_input_password
+content :  Input type radio , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_input_radio
+content :  Input type checkbox , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_input_checkbox
+content :  Input type button , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_input_button
+content :  Input type number - with restrictions , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_input_number
+content :  Input type number - with steps , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_input_number_step
+content :  Input type date - with date picker , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_input_date
+content :  Input type date - with restrictions , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_input_date_max_min
+content :  Input type color - with color picker , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_input_color
+content :  Input type range , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_input_range
+content :  Input type month , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_input_month
+content :  Input type week , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_input_week
+content :  Input type time , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_input_time
+content :  Input type datetime , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_input_datetime
+content :  Input type datetime-local , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_input_datetime-local
+content :  Input type email , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_input_email
+content :  Input type search , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_input_search
+content :  Input type tel , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_input_tel
+content :  Input type url , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_input_url
+content :  Examples explained , link :  http://www.w3schools.com/html_form_input_types.asp
+content :  The autocomplete attribute , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_input_autocomplete
+content :  The novalidate attribute , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_form_novalidate
+content :  The autofocus_attribute , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_input_autofocus
+content :  The form attribute , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_input_form
+content :  The formaction attribute , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_input_formaction
+content :  The formenctype attribute , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_input_formenctype
+content :  The formmethod attribute , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_input_formmethod
+content :  The formnovalidate attribute , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_input_formnovalidate
+content :  The formtarget attribute , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_input_formtarget
+content :  The height and width attributes , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_input_height_width
+content :  The list attribute , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_input_list
+content :  The min and max attributes , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_input_max_min
+content :  The multiple attribute , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_input_multiple
+content :  The pattern attribute , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_input_pattern
+content :  The placeholder attribute , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_input_placeholder
+content :  The required attribute , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_input_required
+content :  The step attribute , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_input_step
+content :  Examples explained , link :  http://www.w3schools.com/html_form_attributes.asp
+content :  Draw on the canvas with JavaScript , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_canvas_first
+content :  Draw a line with lineTo() , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_canvas_tut_path
+content :  Draw a circle with arc() , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_canvas_tut_path2
+content :  Draw a text with fillText() , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_canvas_tut_text
+content :  Draw a text with strokeText() , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_canvas_tut_text2
+content :  Draw a linear gradient , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_canvas_tut_grad
+content :  Draw a circular gradient , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_canvas_tut_grad2
+content :  Draw an image with drawImage() , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_canvas_tut_img
+content :  Examples explained , link :  http://www.w3schools.com/html5_canvas.asp
+content :  SVG Circle , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_svg_circle
+content :  SVG Rectangle , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_svg_rect
+content :  SVG Rounded Rectangle , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_svg_rect_round
+content :  SVG Star , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_svg_star
+content :  SVG Logo , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml_svg_logo
+content :  Examples explained , link :  http://www.w3schools.com/html5_svg.asp
+content :  Play Bunny , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_video
+content :  Play bear video with controls , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_video_all
+content :  Play bear video with autoplay , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_video_autoplay
+content :  Play Horse sound with controls , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_audio_all
+content :  Examples explained , link :  http://www.w3schools.com/html_media.asp
+content :  Get geolocation coordinates , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_geolocation
+content :  Handle geolocation errors , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_geolocation_error
+content :  Get geolocation with a map , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_geolocation_map
+content :  Get geolocation with Google map script , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_geolocation_map_script
+content :  Get geolocation and watch the position , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_geolocation_watchposition
+content :  Examples explained , link :  http://www.w3schools.com/html5_geolocation.asp
+content :  Store a name permanently , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_webstorage_local
+content :  Store a counter permanently , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_webstorage_local_clickcount
+content :  Store a counter for one session , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_webstorage_session
+content :  Examples explained , link :  http://www.w3schools.com/html5_webstorage.asp
+content :  HTML5 drag and drop , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_draganddrop
+content :  HTML5 application cache , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_html_manifest
+content :  HTML5 web workers , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_webworker
+content :  HTML5 server sent events , link :  http://www.w3schools.com/tryit.asp?filename=tryhtml5_sse
+content :  « Previous , link :  http://www.w3schools.com/html5_serversentevents.asp
+content :  Next Chapter » , link :  http://www.w3schools.com/html_quiz.asp
+content :  HTML, CSS, JavaScript, PHP, jQuery, Bootstrap and XML Certifications , link :  http://www.w3schools.com/cert/default.asp
+content :  None , link :  http://www.w3schools.com/colors/colors_picker.asp
+content :  Color Converter , link :  http://www.w3schools.com/colors/colors_converter.asp
+content :  Google Maps , link :  http://www.w3schools.com/howto/howto_google_maps.asp
+content :  Animated Buttons , link :  http://www.w3schools.com/howto/howto_css_animate_buttons.asp
+content :  Modal Boxes , link :  http://www.w3schools.com/howto/howto_css_modals.asp
+content :  Modal Images , link :  http://www.w3schools.com/howto/howto_css_modal_images.asp
+content :  Tooltips , link :  http://www.w3schools.com/howto/howto_css_tooltip.asp
+content :  Loaders , link :  http://www.w3schools.com/howto/howto_css_loader.asp
+content :  JS Animations , link :  http://www.w3schools.com/howto/howto_js_animate.asp
+content :  Progress Bars , link :  http://www.w3schools.com/howto/howto_js_progressbar.asp
+content :  Dropdowns , link :  http://www.w3schools.com/howto/howto_js_dropdown.asp
+content :  Slideshow , link :  http://www.w3schools.com/howto/howto_js_slideshow.asp
+content :  Side Navigation , link :  http://www.w3schools.com/howto/howto_js_sidenav.asp
+content :  HTML Includes , link :  http://www.w3schools.com/howto/howto_html_include.asp
+content :  Color Palettes , link :  http://www.w3schools.com/w3css/w3css_color_palettes.asp
+content :  PRINT PAGE , link :  http://www.w3schools.com/
+content :  FORUM , link :  http://www.w3schools.com/forum/default.asp
+content :  ABOUT , link :  http://www.w3schools.com/about/default.asp
+content :  HTML Tutorial , link :  http://www.w3schools.com/html/default.asp
+content :  CSS Tutorial , link :  http://www.w3schools.com/css/default.asp
+content :  JavaScript Tutorial , link :  http://www.w3schools.com/js/default.asp
+content :  W3.CSS Tutorial , link :  http://www.w3schools.com/w3css/default.asp
+content :  Bootstrap Tutorial , link :  http://www.w3schools.com/bootstrap/default.asp
+content :  SQL Tutorial , link :  http://www.w3schools.com/sql/default.asp
+content :  PHP Tutorial , link :  http://www.w3schools.com/php/default.asp
+content :  jQuery Tutorial , link :  http://www.w3schools.com/jquery/default.asp
+content :  Angular Tutorial , link :  http://www.w3schools.com/angular/default.asp
+content :  XML Tutorial , link :  http://www.w3schools.com/xml/default.asp
+content :  HTML Reference , link :  http://www.w3schools.com/tags/default.asp
+content :  CSS Reference , link :  http://www.w3schools.com/cssref/default.asp
+content :  JavaScript Reference , link :  http://www.w3schools.com/jsref/default.asp
+content :  W3.CSS Reference , link :  http://www.w3schools.com/w3css/w3css_references.asp
+content :  Browser Statistics , link :  http://www.w3schools.com/browsers/default.asp
+content :  PHP Reference , link :  http://www.w3schools.com/php/php_ref_array.asp
+content :  HTML Colors , link :  http://www.w3schools.com/colors/colors_names.asp
+content :  HTML Character Sets , link :  http://www.w3schools.com/charsets/default.asp
+content :  jQuery Reference , link :  http://www.w3schools.com/jquery/jquery_ref_selectors.asp
+content :  AngularJS Reference , link :  http://www.w3schools.com/angular/angular_ref_directives.asp
+content :  HTML Examples , link :  http://www.w3schools.com/html/html_examples.asp
+content :  CSS Examples , link :  http://www.w3schools.com/css/css_examples.asp
+content :  JavaScript Examples , link :  http://www.w3schools.com/js/js_examples.asp
+content :  W3.CSS Examples , link :  http://www.w3schools.com/w3css/w3css_examples.asp
+content :  HTML DOM Examples , link :  http://www.w3schools.com/js/js_dom_examples.asp
+content :  PHP Examples , link :  http://www.w3schools.com/php/php_examples.asp
+content :  jQuery Examples , link :  http://www.w3schools.com/jquery/jquery_examples.asp
+content :  ASP Examples , link :  http://www.w3schools.com/asp/asp_examples.asp
+content :  XML Examples , link :  http://www.w3schools.com/xml/xml_examples.asp
+content :  SVG Examples , link :  http://www.w3schools.com/svg/svg_examples.asp
+content :  HTML Certificate , link :  http://www.w3schools.com/cert/default.asp
+content :  HTML5 Certificate , link :  http://www.w3schools.com/cert/default.asp
+content :  CSS Certificate , link :  http://www.w3schools.com/cert/default.asp
+content :  JavaScript Certificate , link :  http://www.w3schools.com/cert/default.asp
+content :  jQuery Certificate , link :  http://www.w3schools.com/cert/default.asp
+content :  PHP Certificate , link :  http://www.w3schools.com/cert/default.asp
+content :  Bootstrap Certificate , link :  http://www.w3schools.com/cert/default.asp
+content :  XML Certificate , link :  http://www.w3schools.com/cert/default.asp
+content :  terms of use , link :  http://www.w3schools.com/about/about_copyright.asp
+content :  cookie and privacy policy , link :  http://www.w3schools.com/about/about_privacy.asp
+content :  Copyright 1999-2016 , link :  http://www.w3schools.com/about/about_copyright.asp
+content :  Powered by W3.CSS , link :  http://www.w3schools.com/w3css/
+content :  None , link :  http://www.w3schools.com
+content :  Learn HTML , link :  http://www.w3schools.com/html/default.asp
+content :  Learn CSS , link :  http://www.w3schools.com/css/default.asp
+content :  Learn W3.CSS , link :  http://www.w3schools.com/w3css/default.asp
+content :  Learn Colors , link :  http://www.w3schools.com/colors/default.asp
+content :  Learn Bootstrap , link :  http://www.w3schools.com/bootstrap/default.asp
+content :  Learn JavaScript , link :  http://www.w3schools.com/js/default.asp
+content :  Learn jQuery , link :  http://www.w3schools.com/jquery/default.asp
+content :  Learn jQueryMobile , link :  http://www.w3schools.com/jquerymobile/default.asp
+content :  Learn AppML , link :  http://www.w3schools.com/appml/default.asp
+content :  Learn AngularJS , link :  http://www.w3schools.com/angular/default.asp
+content :  Learn AJAX , link :  http://www.w3schools.com/ajax/default.asp
+content :  Learn JSON , link :  http://www.w3schools.com/json/default.asp
+content :  Learn Canvas , link :  http://www.w3schools.com/canvas/default.asp
+content :  Learn SVG , link :  http://www.w3schools.com/svg/default.asp
+content :  Learn Icons , link :  http://www.w3schools.com/icons/default.asp
+content :  Learn Google Maps , link :  http://www.w3schools.com/googleapi/default.asp
+content :  Learn HTML Games , link :  http://www.w3schools.com/games/default.asp
+content :  Learn SQL , link :  http://www.w3schools.com/sql/default.asp
+content :  Learn PHP , link :  http://www.w3schools.com/php/default.asp
+content :  Learn ASP , link :  http://www.w3schools.com/asp/default.asp
+content :  Learn ASP.NET , link :  http://www.w3schools.com/aspnet/default.asp
+content :  Web Building , link :  http://www.w3schools.com/website/default.asp
+content :  Web Statistics , link :  http://www.w3schools.com/browsers/default.asp
+content :  Web Certificates , link :  http://www.w3schools.com/cert/default.asp
+content :  Learn XML , link :  http://www.w3schools.com/xml/default.asp
+content :  Learn XSLT , link :  http://www.w3schools.com/xsl/default.asp
+content :  HTML Tag Reference , link :  http://www.w3schools.com/tags/default.asp
+content :  HTML Event Reference , link :  http://www.w3schools.com/tags/ref_eventattributes.asp
+content :  HTML Color Reference , link :  http://www.w3schools.com/colors/default.asp
+content :  CSS Reference , link :  http://www.w3schools.com/cssref/default.asp
+content :  CSS Selector Reference , link :  http://www.w3schools.com/cssref/css_selectors.asp
+content :  W3.CSS Reference , link :  http://www.w3schools.com/w3css/w3css_references.asp
+content :  Bootstrap Reference , link :  http://www.w3schools.com/bootstrap/bootstrap_ref_css_text.asp
+content :  JavaScript Reference , link :  http://www.w3schools.com/jsref/default.asp
+content :  HTML DOM Reference , link :  http://www.w3schools.com/jsref/default.asp
+content :  jQuery Reference , link :  http://www.w3schools.com/jquery/jquery_ref_selectors.asp
+content :  jQuery Mobile Reference , link :  http://www.w3schools.com/jquerymobile/jquerymobile_ref_data.asp
+content :  AngularJS Reference , link :  http://www.w3schools.com/angular/angular_ref_directives.asp
+content :  Google Maps Reference , link :  http://www.w3schools.com/googleAPI/google_maps_ref.asp
+content :  PHP Reference , link :  http://www.w3schools.com/php/php_ref_array.asp
+content :  SQL Reference , link :  http://www.w3schools.com/sql/sql_quickref.asp
+content :  ASP Reference , link :  http://www.w3schools.com/asp/asp_ref_response.asp
+content :  Razor Reference , link :  http://www.w3schools.com/aspnet/webpages_ref_classes.asp
+content :  ASP.NET Reference , link :  http://www.w3schools.com/aspnet/aspnet_refhtmlcontrols.asp
+content :  XML Reference , link :  http://www.w3schools.com/xml/dom_nodetype.asp
+content :  XSLT Reference , link :  http://www.w3schools.com/xsl/xsl_w3celementref.asp
+content :  XML Schema Reference , link :  http://www.w3schools.com/xml/schema_elements_ref.asp
+content :  SVG Reference , link :  http://www.w3schools.com/svg/svg_reference.asp
+content :  HTML Character Sets , link :  http://www.w3schools.com/charsets/default.asp
+content :  HTML ASCII , link :  http://www.w3schools.com/charsets/ref_html_ascii.asp
+content :  HTML ANSI , link :  http://www.w3schools.com/charsets/ref_html_ansi.asp
+content :  HTML Windows-1252 , link :  http://www.w3schools.com/charsets/ref_html_ansi.asp
+content :  HTML ISO-8859-1 , link :  http://www.w3schools.com/charsets/ref_html_8859.asp
+content :  HTML Symbols , link :  http://www.w3schools.com/charsets/ref_html_symbols.asp
+content :  HTML UTF-8 , link :  http://www.w3schools.com/charsets/ref_html_utf8.asp
+content :  HTML Examples , link :  http://www.w3schools.com/html/html_examples.asp
+content :  CSS Examples , link :  http://www.w3schools.com/css/css_examples.asp
+content :  W3.CSS Examples , link :  http://www.w3schools.com/w3css/w3css_examples.asp
+content :  JavaScript Examples , link :  http://www.w3schools.com/js/js_examples.asp
+content :  HTML DOM Examples , link :  http://www.w3schools.com/js/js_dom_examples.asp
+content :  jQuery Examples , link :  http://www.w3schools.com/jquery/jquery_examples.asp
+content :  jQuery Mobile Examples , link :  http://www.w3schools.com/jquerymobile/jquerymobile_examples.asp
+content :  AngularJS Examples , link :  http://www.w3schools.com/angular/angular_examples.asp
+content :  AJAX Examples , link :  http://www.w3schools.com/ajax/ajax_examples.asp
+content :  PHP Examples , link :  http://www.w3schools.com/php/php_examples.asp
+content :  ASP Examples , link :  http://www.w3schools.com/asp/asp_examples.asp
+content :  Razor Examples , link :  http://www.w3schools.com/aspnet/webpages_examples.asp
+content :  .NET Examples , link :  http://www.w3schools.com/aspnet/aspnet_examples.asp
+content :  XML Examples , link :  http://www.w3schools.com/xml/xml_examples.asp
+content :  XSL Examples , link :  http://www.w3schools.com/xsl/xsl_examples.asp
+content :  XSLT Examples , link :  http://www.w3schools.com/xsl/xsl_examples.asp
+content :  XPath Examples , link :  http://www.w3schools.com/xsl/xpath_examples.asp
+content :  XML Schema Examples , link :  http://www.w3schools.com/xml/schema_example.asp
+content :  SVG Examples , link :  http://www.w3schools.com/svg/svg_examples.asp
