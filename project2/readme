@@ -1,0 +1,4 @@
+- Execution : python 20141578.python
+- Object : Crawling recursively from http://cspro.sogang.ac.kr/~gr120160213
+- Result : Output_000n.txt (n directs n th visited page)
+					 URL.txt (save visited URL)
