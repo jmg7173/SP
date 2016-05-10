@@ -1,7 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 
-class parsetree:
+class parsetree(object):
+	cnt = 0
 	def __init__(self, soup, url):
 		self.soup = soup
 		self.url = url
@@ -11,11 +12,11 @@ class parsetree:
 		self.child.append(tree)
 	
 	def save_all(self, url_file):
-		filename = self.url[39:len(self.url)-5]
+		parsetree.cnt = parsetree.cnt + 1
+		"""filename = self.url[39:len(self.url)-5]
 		if not filename:
-			filename = "index"
-
-		output_file = open("Output_%s.txt" % filename, "w")
+			filename = "index" """
+		output_file = open("Output_%04d.txt" % parsetree.cnt, "w")
 		url_file.write(self.url+'\n')
 		output_file.write(self.soup.text)
 		output_file.close()
