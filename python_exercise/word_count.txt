@@ -1,0 +1,3 @@
+coffee	coffee	beer
+milk	milk	beer	latte
+latte	coffee	water
