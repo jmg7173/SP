@@ -1,0 +1,25 @@
+program description :
+Bi-Gram language modeling mapper & reducer using hadoop system on AWS
+
+execution :
+On AWS, set mapper as Mapper.py, reducer as Reducer.py.
+input : s3://spta16/out--ascii_.result.txt
+output : s3://sp-20141578/OUTPUT/
+
+s3 output file URL links :
+https://s3.ap-northeast-2.amazonaws.com/sp-20141578/OUTPUT/part-00000
+https://s3.ap-northeast-2.amazonaws.com/sp-20141578/OUTPUT/part-00001
+https://s3.ap-northeast-2.amazonaws.com/sp-20141578/OUTPUT/part-00002
+https://s3.ap-northeast-2.amazonaws.com/sp-20141578/OUTPUT/part-00003
+https://s3.ap-northeast-2.amazonaws.com/sp-20141578/OUTPUT/part-00004
+https://s3.ap-northeast-2.amazonaws.com/sp-20141578/OUTPUT/part-00005
+https://s3.ap-northeast-2.amazonaws.com/sp-20141578/OUTPUT/part-00006
+
+s3 links :
+s3://sp-20141578/OUTPUT/part-00000
+s3://sp-20141578/OUTPUT/part-00001
+s3://sp-20141578/OUTPUT/part-00002
+s3://sp-20141578/OUTPUT/part-00003
+s3://sp-20141578/OUTPUT/part-00004
+s3://sp-20141578/OUTPUT/part-00005
+s3://sp-20141578/OUTPUT/part-00006

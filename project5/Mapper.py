@@ -8,5 +8,5 @@ while True:
     prev = ""
     for word in str1.split(): 
         if prev:
-            stdout.write("%s\t%s\t1\n" % (prev,word))
+            stdout.write("%s %s\t1\n" % (prev,word))
         prev = word

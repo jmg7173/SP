@@ -18,4 +18,4 @@ while True:
 
 for keys in sorted(words):
     for word in sorted(words[keys]):
-        stdout.write("%s\t%s\t%d\n" % (keys, word, words[keys][word]))    
+        stdout.write("%s %s\t%d\n" % (keys, word, words[keys][word]))    
