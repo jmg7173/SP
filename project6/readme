@@ -1,0 +1,15 @@
+program description :
+Save Bi-gram language model at AWS DynamoDB using Python boto.
+Search Bi-gram language model from AWS DynamoDB using Python with CLI.
+
+  - Save at DB 
+		- execution : python DynamoDB_Import_S3.py
+		- error handling : if you save duplicated word, raise ConditionalCheckFailedException and sum input count at previous count.
+  - Search from DB as CLI 
+		- execution : python DynamoDB_Query_CLI.py
+		- quit CLI : input word 'quit'
+		- error handling
+		  - Not existing word : if you input invalid word(such as not existing word at DB), raise ItemNotFound exception and print "word 'word' is invalid input"
+			- Only whitespace or no input : print "Do not input blank word"
+		- This program trim whitespace.
+		  - ex)"    aaa             bb           " -> "aaa bb"
