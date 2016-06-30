@@ -1,1 +1,1 @@
-# System Programming Project 2016. 20141578 sogang Univ.
+# SIC/XE Machine and Web Crawling, Python with AWS Service
